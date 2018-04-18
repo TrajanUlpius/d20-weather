@@ -1,8 +1,7 @@
 var readDiceFormula = function readDiceFormula(formula) {
     if (typeof (formula) === 'number') {
-        return base.precipitation.form.duration;
-    }
-    else {
+        return formula;
+    } else {
         var modificator = 0;
         var plusSignIndex = formula.indexOf('+');
         if (plusSignIndex > 0) {
@@ -27,13 +26,6 @@ var readDiceFormula = function readDiceFormula(formula) {
         return sum;
     }
 };
-
-var input = {
-    climate: 'temperate',
-    elevation: 'lowland',
-    season: 'fall'
-};
-
 
 var precipitationFrequencyType = {
     drought: 0,
@@ -62,8 +54,7 @@ var climate = {
         },
         precipitationFrequencyAdjustment: -1,
         precipitationIntensityAdjustment: -1,
-        temperatureVariations: [
-            {
+        temperatureVariations: [{
                 probability: 0.2,
                 variation: '-3d10',
                 duration: '1d4'
@@ -102,13 +93,12 @@ var climate = {
     },
     temperate: {
         temperature: {
-            winter: 20,
-            spring: 30,
-            summer: 40,
-            fall: 30
+            winter: 30,
+            spring: 60,
+            summer: 80,
+            fall: 60
         },
-        temperatureVariations: [
-            {
+        temperatureVariations: [{
                 probability: 0.05,
                 variation: '-3d10',
                 duration: '1d2'
@@ -147,15 +137,14 @@ var climate = {
     },
     tropical: {
         temperature: {
-            winter: 20,
-            spring: 30,
-            summer: 40,
-            fall: 30
+            winter: 50,
+            spring: 75,
+            summer: 95,
+            fall: 75
         },
         precipitationFrequencyAdjustment: 1,
         precipitationIntensityAdjustment: 1,
-        temperatureVariations: [
-            {
+        temperatureVariations: [{
                 probability: 0.1,
                 variation: '-2d10',
                 duration: '1d2'
@@ -222,17 +211,75 @@ var season = {
     }
 };
 
+var precipitationFormTypes = {
+    lightFog: {
+        name: 'light fog',
+        text: precipitationTexts.lightFog,
+        class: 'wi-fog light'
+    },
+    mediumFog: {
+        name: 'medium fog',
+        text: precipitationTexts.mediumFog,
+        class: 'wi-fog medium'
+    },
+    heavyFog: {
+        name: 'heavy fog',
+        text: precipitationTexts.heavyFog,
+        class: 'wi-fog heavy'
+    },
+    drizzle: {
+        name: 'drizzle',
+        text: precipitationTexts.drizzle,
+        class: 'wi-day-rain light'
+    },
+    rain: {
+        name: 'rain',
+        text: precipitationTexts.rain,
+        class: 'wi-rain medium'
+    },
+    heavyRain: {
+        name: 'heavy rain',
+        text: precipitationTexts.heavyRain,
+        class: 'wi-day-rain heavy'
+    },
+    sleet: {
+        name: 'sleet',
+        text: precipitationTexts.sleet,
+        class: 'wi-sleet heavy'
+    },
+    lightSnow: {
+        name: 'light snow',
+        text: precipitationTexts.lightSnow,
+        class: 'wi-snow light'
+    },
+    mediumSnow: {
+        name: 'medium snow',
+        text: precipitationTexts.mediumSnow,
+        class: 'wi-snow medium'
+    },
+    heavySnow: {
+        name: 'heavy snow',
+        text: precipitationTexts.heavySnow,
+        class: 'wi-day-rain heavy'
+    },
+    thunderstorm: {
+        name: 'thunderstorm',
+        text: precipitationTexts.thunderstorm,
+        class: 'wi-thunderstorm heavy'
+    }
+
+};
+
 var precipitationForm = {
     light: {
-        unfrozen: [
-            {
+        unfrozen: [{
                 probability: 0.2,
-                name: 'light fog',
+                name: 'lightFog',
                 duration: '1d8'
             },
             {
                 probability: 0.4,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d6'
             },
             {
@@ -247,63 +294,62 @@ var precipitationForm = {
             },
             {
                 probability: 0.9,
-                name: 'light rain',
+                name: 'rain',
                 duration: '1d4'
             },
             {
                 probability: 1,
-                name: 'light rain (sleet if below 40°F)',
+                name: 'rain',
+                mayBeSleet: true,
                 duration: 1
             }
         ],
-        frozen: [
-            {
+        frozen: [{
                 probability: 0.2,
-                name: 'light fog',
+                name: 'lightFog',
                 duration: '1d6'
             },
             {
                 probability: 0.4,
-                name: 'light fog',
+                name: 'lightFog',
                 duration: '1d8'
             },
             {
                 probability: 0.5,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d4'
             },
             {
                 probability: 0.6,
-                name: 'light snow',
+                name: 'lightSnow',
                 duration: 1
             },
             {
                 probability: 0.75,
-                name: 'light snow',
+                name: 'lightSnow',
                 duration: '1d4'
             },
             {
                 probability: 1,
-                name: 'light snow',
+                name: 'lightSnow',
                 duration: '2d12'
             }
         ]
     },
     medium: {
-        unfrozen: [
-            {
+        unfrozen: [{
                 probability: 0.1,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d8'
             },
             {
                 probability: 0.2,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d12'
             },
             {
                 probability: 0.3,
-                name: 'heavy fog',
+                name: 'heavyFog',
                 duration: '1d4'
             },
             {
@@ -323,84 +369,208 @@ var precipitationForm = {
             },
             {
                 probability: 1,
-                name: 'rain (sleet if below 40°F)',
+                name: 'rain',
+                mayBeSleet: true,
                 duration: '1d4'
             }
         ],
-        frozen: [
-            {
+        frozen: [{
                 probability: 0.1,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d6'
             },
             {
                 probability: 0.2,
-                name: 'medium fog',
+                name: 'mediumFog',
                 duration: '1d8'
             },
             {
                 probability: 0.3,
-                name: 'heavy fog',
+                name: 'heavyFog',
                 duration: '1d4'
             },
             {
                 probability: 0.5,
-                name: 'medium snow',
+                name: 'mediumSnow',
                 duration: '1d4'
             },
             {
                 probability: 0.9,
-                name: 'medium snow',
+                name: 'mediumSnow',
                 duration: '1d8'
             },
             {
                 probability: 1,
-                name: 'medium snow',
+                name: 'mediumSnow',
+                duration: '2d12'
+            }
+        ]
+    },
+    heavy: {
+        unfrozen: [{
+                probability: 0.1,
+                name: 'heavyFog',
+                duration: '1d8'
+            },
+            {
+                probability: 0.2,
+                name: 'heavyFog',
+                duration: '2d6'
+            },
+            {
+                probability: 0.5,
+                name: 'heavyRain',
+                duration: '1d12'
+            },
+            {
+                probability: 0.7,
+                name: 'heavyRain',
+                duration: '2d12'
+            },
+            {
+                probability: 0.85,
+                name: 'heavyRain',
+                mayBeSleet: true,
+                duration: '1d8'
+            },
+            {
+                probability: 0.9,
+                name: 'thunderstorm',
+                duration: 1
+            },
+            {
+                probability: 1,
+                name: 'thunderstorm',
+                duration: '1d3'
+            }
+        ],
+        frozen: [{
+                probability: 0.1,
+                name: 'mediumFog',
+                duration: '1d8'
+            },
+            {
+                probability: 0.2,
+                name: 'heavyFog',
+                duration: '2d6'
+            },
+            {
+                probability: 0.6,
+                name: 'lightSnow',
+                duration: '2d12'
+            },
+            {
+                probability: 0.9,
+                name: 'mediumSnow',
+                duration: '1d8'
+            },
+            {
+                probability: 1,
+                name: 'heavySnow',
+                duration: '1d6'
+            }
+        ]
+    },
+    torrential: {
+        unfrozen: [{
+                probability: 0.05,
+                name: 'heavyFog',
+                duration: '1d8'
+            },
+            {
+                probability: 0.1,
+                name: 'heavyFog',
+                duration: '2d6'
+            },
+            {
+                probability: 0.3,
+                name: 'heavyRain',
+                duration: '2d6'
+            },
+            {
+                probability: 0.6,
+                name: 'heavyRain',
+                duration: '2d12'
+            },
+            {
+                probability: 0.8,
+                name: 'heavyRain',
+                mayBeSleet: true,
+                duration: '2d6'
+            },
+            {
+                probability: 0.95,
+                name: 'thunderstorm',
+                duration: '1d3'
+            },
+            {
+                probability: 1,
+                name: 'thunderstorm',
+                duration: '1d6'
+            }
+        ],
+        frozen: [{
+                probability: 0.05,
+                name: 'heavyFog',
+                duration: '1d8'
+            },
+            {
+                probability: 0.1,
+                name: 'heavyFog',
+                duration: '2d6'
+            },
+            {
+                probability: 0.5,
+                name: 'heavySnow',
+                duration: '1d4'
+            },
+            {
+                probability: 0.9,
+                name: 'heavySnow',
+                duration: '1d8'
+            },
+            {
+                probability: 1,
+                name: 'heavySnow',
                 duration: '2d12'
             }
         ]
     }
 };
 
-var base = {
-    temperature: climate[input.climate].temperature[input.season] + (elevation[input.elevation].temperatureAdjustment || 0),
-    precipitationFrequency: season[input.season][input.climate] + (elevation[input.elevation].precipitationFrequencyAdjustment || 0) + (climate[input.climate].precipitationFrequencyAdjustment || 0),
-    precipitationIntensity: elevation[input.elevation].precipitationIntensity + (climate[input.climate].precipitationIntensityAdjustment || 0)
-};
-
-console.info({ base });
-
-// add some variation to the temperature
-var temperatureVariationCheck = Math.random();
-var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => temperatureVariationCheck <= v.probability)[0];
-base.temperature += readDiceFormula(temperatureVariation.variation);
-
-console.info({ temperatureVariationCheck, temperatureVariation, base });
-
-// is there any precipitation ?
-var precipitationCheck = Math.random();
-console.info({ precipitationCheck, threshold: precipitationFrequencyValue[base.precipitationFrequency] });
-
-if (precipitationCheck < precipitationFrequencyValue[base.precipitationFrequency]) {
-
-    // drought means that precipitation is less intense
-    if (base.precipitationFrequency === precipitationFrequencyType.drought) {
-        base.precipitationIntensity--;
-    }
-
-    var precipitationFormCheck = Math.random();
-    var precipitationFormArray = precipitationForm[Object.keys(precipitationForm)[base.precipitationIntensity]][base.temperature <= 32 ? 'frozen' : 'unfrozen'];
-
-    base.precipitation = {
-        form: precipitationFormArray.filter(form => precipitationFormCheck <= form.probability)[0],
-        start: Math.random() * 23
+var generateWeather = function generateWeather(input) {
+    var base = {
+        temperature: climate[input.climate].temperature[input.season] + (elevation[input.elevation].temperatureAdjustment || 0),
+        precipitationFrequency: season[input.season][input.climate] + (elevation[input.elevation].precipitationFrequencyAdjustment || 0) + (climate[input.climate].precipitationFrequencyAdjustment || 0),
+        precipitationIntensity: elevation[input.elevation].precipitationIntensity + (climate[input.climate].precipitationIntensityAdjustment || 0)
     };
 
-    // compute duration
-    base.precipitation.duration = readDiceFormula(base.precipitation.form.duration);
+    // add some variation to the temperature
+    base.temperatureVariationCheck = Math.random();
+    var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
+    base.temperature += readDiceFormula(temperatureVariation.variation);
 
-    console.info({ precipitationFormCheck });
-}
+    // is there any precipitation ?
+    base.precipitationCheck = Math.random();
 
+    if (base.precipitationCheck < precipitationFrequencyValue[base.precipitationFrequency]) {
 
-console.log(base);
+        // drought means that precipitation is less intense
+        if (base.precipitationFrequency === precipitationFrequencyType.drought) {
+            base.precipitationIntensity--;
+        }
+
+        base.precipitationFormCheck = Math.random();
+        var precipitationFormArray = precipitationForm[Object.keys(precipitationForm)[base.precipitationIntensity]][base.temperature <= 32 ? 'frozen' : 'unfrozen'];
+
+        base.precipitation = {
+            form: precipitationFormArray.filter(form => base.precipitationFormCheck <= form.probability)[0],
+            start: Math.random() * 23
+        };
+
+        // compute duration
+        base.precipitation.duration = readDiceFormula(base.precipitation.form.duration);
+    }
+
+    return base;
+};

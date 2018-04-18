@@ -15,42 +15,146 @@
 
   <style>
     .wi {
-      font-size: 30px;
-      height: 50px;
-      width: 50px;
-      line-height: 50px;
+      font-size: 45px;
+      height: 80px;
+      width: 80px;
+      line-height: 80px;
       text-align: center;
       background-color: red;
       color: white;
+      margin: 20px;
+    }
+
+    .wi.light {
+      background-color: yellowgreen;
+    }
+
+    .wi.medium {
+      background-color: chocolate;
     }
   </style>
+  <script src="weather-items.js"></script>
+  <script src="pfwg.js"></script>
+  <script>
+    var readValues = function readValues() {
+
+
+      var result = generateWeather({
+        climate: $('#select-climate').val(),
+        elevation: $('#select-elevation').val(),
+        season: $('#select-season').val(),
+      });
+
+      $('#result').text(JSON.stringify(result));
+
+
+      $('#summary').empty();
+
+      if (result.hasOwnProperty('precipitation')) {
+
+        console.log({
+          precipitationFormTypes,
+          precipitation: result.precipitation
+        });
+
+        var precipitationSummary = precipitationFormTypes[result.precipitation.form.name];
+
+        $('#summary')
+          .append($('<div>', {
+            class: 'wi ' + precipitationSummary.class,
+            'data-toggle': 'tooltip',
+            'data-placement': 'right',
+            title: precipitationSummary.text
+          }).tooltip());
+      }
+
+      if (result.hasOwnProperty('temperature')) {
+        if (result.temperature <= -20) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-snowflake-cold heavy',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.extremeCold
+            }).tooltip());
+        } else if (result.temperature <= 0) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-snowflake-cold medium',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.severeCold
+            }).tooltip());
+        } else if (result.temperature <= 40) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-snowflake-cold light',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.veryCold
+            }).tooltip());
+        } else if (result.temperature >= 90) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-hot light',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: hotTemperatureTexts.veryHot
+            }).tooltip());
+        } else if (result.temperature >= 110) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-hot medium',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: hotTemperatureTexts.severeHot
+            }).tooltip());
+        } else if (result.temperature >= 140) {
+          $('#summary')
+            .append($('<div>', {
+              class: 'wi wi-hot heavy',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: hotTemperatureTexts.extremeHot
+            }).tooltip());
+        }
+      }
+    };
+  </script>
 </head>
 
 <body>
 
-  <i class="wi wi-fog"></i>
-  <i class="wi wi-fog"></i>
-  <i class="wi wi-fog"></i>
-  <i class="wi wi-day-rain"></i>
-  <i class="wi wi-rain"></i>
-  <i class="wi wi-rain"></i>
-  <i class="wi wi-sleet"></i>
-  <i class="wi wi-snow"></i>
-  <i class="wi wi-snow"></i>
-  <i class="wi wi-snow"></i>
-  <i class="wi wi-thunderstorm"></i>
+  <div>
+    <label for="select-climate">Climate:</label>
+    <select id="select-climate">
+      <option value="cold">cold</option>
+      <option value="temperate" selected="selected">temperate</option>
+      <option value="tropical">tropical</option>
+    </select>
+    <br/>
+    <label for="select-season">Season:</label>
+    <select id="select-season">
+      <option value="winter">winter</option>
+      <option value="spring" selected="selected">spring</option>
+      <option value="summer">summer</option>
+      <option value="fall">fall</option>
+    </select>
+    <br/>
+    <label for="select-elevation">Elevation:</label>
+    <select id="select-elevation">
+      <option value="seaLevel">sea level</option>
+      <option value="lowland" selected="selected">lowland</option>
+      <option value="highland">highlang</option>
+    </select>
+    <button onclick="readValues()">GO</button>
+  </div>
 
-  <i class="wi wi-hot"></i>
-  <i class="wi wi-hot"></i>
-  <i class="wi wi-hot"></i>
-  <i class="wi wi-snowflake-cold"></i>
-  <i class="wi wi-snowflake-cold"></i>
-  <i class="wi wi-snowflake-cold"></i>
+  <div id="result"></div>
 
+  <div id="summary">
 
-  <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Tooltip on top">
-    Tooltip on top
-  </button>
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -60,10 +164,6 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-
-  <script>
-    $('button').tooltip();
-  </script>
 </body>
 
 </html>
