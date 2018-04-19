@@ -33,11 +33,12 @@
       background-color: chocolate;
     }
   </style>
+  <script src="weather.js"></script>
   <script src="weather-items.js"></script>
+  <script src="ogl-data.js"></script>
   <script src="pfwg.js"></script>
   <script>
     var readValues = function readValues() {
-
 
       var result = generateWeather({
         climate: $('#select-climate').val(),
@@ -46,7 +47,6 @@
       });
 
       $('#result').text(JSON.stringify(result));
-
 
       $('#summary').empty();
 
