@@ -20,7 +20,7 @@ var readDiceFormula = function readDiceFormula(formula) {
         var diceArray = formula.split('d').map(str => Math.abs(parseInt(str)));
         var sum = modificator;
         for (var die = 0; die < diceArray[0]; die++) {
-            sum += 1 + Math.random() * (diceArray[1] - 1);
+            sum += throwDie(diceArray[1] - 1);
         }
 
         if (formula[0] === '-') {
@@ -39,12 +39,12 @@ var generateWeather = function generateWeather(input) {
     );
 
     // add some variation to the temperature
-    base.temperatureVariationCheck = Math.random();
+    base.temperatureVariationCheck = throwDie(100);
     var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
     base.temperature += readDiceFormula(temperatureVariation.variation);
 
     // is there any precipitation ?
-    base.precipitationCheck = Math.random();
+    base.precipitationCheck = throwDie(100);
 
     if (base.precipitationCheck < precipitationFrequencyValue[base.precipitationFrequency]) {
 
@@ -53,12 +53,12 @@ var generateWeather = function generateWeather(input) {
             base.precipitationIntensity--;
         }
 
-        base.precipitationFormCheck = Math.random();
+        base.precipitationFormCheck = throwDie(100);
         var precipitationFormArray = precipitationForm[Object.keys(precipitationForm)[base.precipitationIntensity]][base.temperature <= 32 ? 'frozen' : 'unfrozen'];
 
         base.precipitation = {
             form: precipitationFormArray.filter(form => base.precipitationFormCheck <= form.probability)[0],
-            start: Math.random() * 23
+            start: throwDie(24) - 1
         };
 
         // compute duration
