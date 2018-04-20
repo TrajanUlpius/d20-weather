@@ -38,6 +38,7 @@ section#effects {
   color: black;
   position: absolute;
   left: 0;
-  bottom: -1.6em;
-  font-size: 0.6em;
+  bottom: -50px;
+  font-size: 16px;
+  white-space: nowrap;
 }

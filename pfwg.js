@@ -2,6 +2,19 @@ Number.prototype.convertToCelsius = function convertToCelsius() {
     return Math.round((this - 32) / 1.8);
 };
 
+Number.prototype.toAmPmString = function toAmPmString() {
+
+var hour;
+if(this === 0 || this === 12) {
+    hour = 12;
+}
+else {
+    hour = this%12;
+}
+
+    return hour + (this >= 12 ? ' pm' : ' am');
+};
+
 var throwDie = function throwDie(nbFaces) {
     return 1 + Math.floor(Math.random() * nbFaces);
 };
@@ -46,6 +59,7 @@ var generateWeather = function generateWeather(input) {
     base.temperatureVariationCheck = throwDie(100);
     var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
     base.temperature += readDiceFormula(temperatureVariation.variation);
+    base.temperatureNight = base.temperature + readDiceFormula('-3d6');
 
     // is there any precipitation ?
     base.precipitationCheck = throwDie(100);

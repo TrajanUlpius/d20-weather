@@ -32,13 +32,19 @@
 
       $('#result-temperature-f').text(result.temperature);
       $('#result-temperature-c').text(result.temperature.convertToCelsius());
+      $('#result-night-f').text(result.temperatureNight);
+      $('#result-night-c').text(result.temperatureNight.convertToCelsius());
 
-      $('#effects div').empty();
+      $('#effects > div').empty();
 
       // checkif precipitation has in-game effects
       if (result.hasOwnProperty('precipitation')) {
 
         var precipitationSummary = precipitationFormTypes[result.precipitation.form.name];
+
+        if(result.precipitation.form.name.indexOf('Fog') > 0) {
+          $('#effects > div').prepend($('<header>', { text: precipitationTexts.allFog }));
+        }
 
         var $precipitationTile = $('<div>', {
           class: 'wi ' + precipitationSummary.class,
@@ -47,17 +53,21 @@
           title: precipitationSummary.text
         }).tooltip();
 
-        $('#effects div')
+        $('#effects > div')
           .append($precipitationTile.append($('<span>', {
             class: 'precipitation-time',
-            text: result.precipitation.start
+            text: result.precipitation.start.toAmPmString() + ' - ' + (result.precipitation.start + result.precipitation.duration).toAmPmString()
           })));
       }
 
+      var displayColdWarning = false, displayHeatWarning = false;
       // check if temperature has in-game effects
       if (result.hasOwnProperty('temperature')) {
         if (result.temperature <= -20) {
-          $('#effects div')
+
+          displayColdWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold heavy',
               'data-toggle': 'tooltip',
@@ -65,7 +75,10 @@
               title: coldTemperatureTexts.extremeCold
             }).tooltip());
         } else if (result.temperature <= 0) {
-          $('#effects div')
+
+          displayColdWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold medium',
               'data-toggle': 'tooltip',
@@ -73,7 +86,10 @@
               title: coldTemperatureTexts.severeCold
             }).tooltip());
         } else if (result.temperature <= 40) {
-          $('#effects div')
+
+          displayColdWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold light',
               'data-toggle': 'tooltip',
@@ -81,7 +97,10 @@
               title: coldTemperatureTexts.veryCold
             }).tooltip());
         } else if (result.temperature >= 90) {
-          $('#effects div')
+
+          displayHeatWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-hot light',
               'data-toggle': 'tooltip',
@@ -89,7 +108,10 @@
               title: hotTemperatureTexts.veryHot
             }).tooltip());
         } else if (result.temperature >= 110) {
-          $('#effects div')
+
+          displayHeatWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-hot medium',
               'data-toggle': 'tooltip',
@@ -97,7 +119,10 @@
               title: hotTemperatureTexts.severeHot
             }).tooltip());
         } else if (result.temperature >= 140) {
-          $('#effects div')
+
+          displayHeatWarning = true;
+
+          $('#effects > div')
             .append($('<div>', {
               class: 'wi wi-hot heavy',
               'data-toggle': 'tooltip',
@@ -105,6 +130,49 @@
               title: hotTemperatureTexts.extremeHot
             }).tooltip());
         }
+      }
+
+      // check if night is meaningfully colder than day
+      if (result.hasOwnProperty('temperature') && result.hasOwnProperty('temperatureNight')) {
+        if (result.temperatureNight <= -20 && result.temperature > 20) {
+
+          displayColdWarning = true;
+
+          $('#effects > div')
+            .append($('<div>', {
+              class: 'wi wi-night-clear heavy',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.extremeCold
+            }).tooltip());
+        } else if (result.temperatureNight <= 0 && result.temperature > 0) {
+          $('#effects > div')
+            .append($('<div>', {
+              class: 'wi wi-night-clear medium',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.severeCold
+            }).tooltip());
+        } else if (result.temperatureNight <= 40 && result.temperature > 40) {
+          $('#effects > div')
+            .append($('<div>', {
+              class: 'wi wi-night-clear light',
+              'data-toggle': 'tooltip',
+              'data-placement': 'right',
+              title: coldTemperatureTexts.veryCold
+            }).tooltip());
+        }
+      }
+
+      if (displayColdWarning === true) {
+        $('#effects > div').prepend($('<header>', { text: coldTemperatureTexts.all }));
+      }
+      else if (displayHeatWarning === true) {
+        $('#effects > div').prepend($('<header>', { text: hotTemperatureTexts.all }));
+      }
+
+      if ($('#effects > div *').length === 0) {
+        $('#effects > div').append($('<h2>', { text: 'None' }));
       }
     };
   </script>
@@ -148,6 +216,11 @@
           <label>Temperature:</label>
           <span id="result-temperature-f"></span>°F /
           <span id="result-temperature-c"></span>°C
+        </article>
+        <article>
+          <label>At night:</label>
+          <span id="result-night-f"></span>°F /
+          <span id="result-night-c"></span>°C
         </article>
         <article>
           <label>Wind:</label> coming soon.
