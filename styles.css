@@ -1,0 +1,43 @@
+body {
+  font-family: 'Alegreya', serif;
+  background-image: url('parchment-texture.png');
+  background-color: beige;
+  padding: 50px;
+}
+section {
+  border: solid 2px brown;
+  background-color: beige;
+  display: inline-block;
+  padding: 20px;
+}
+section h1 {
+  font-size: 1.7em;
+}
+section#effects {
+  margin-top: 50px;
+  width: 100%;
+}
+.wi {
+  font-size: 45px;
+  height: 80px;
+  width: 80px;
+  line-height: 80px;
+  text-align: center;
+  background-color: red;
+  color: white;
+  margin: 20px;
+  position: relative;
+}
+.wi.light {
+  background-color: yellowgreen;
+}
+.wi.medium {
+  background-color: chocolate;
+}
+.wi .precipitation-time {
+  color: black;
+  position: absolute;
+  left: 0;
+  bottom: -1.6em;
+  font-size: 0.6em;
+}

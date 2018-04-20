@@ -12,27 +12,9 @@
     crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons-wind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 
-  <style>
-    .wi {
-      font-size: 45px;
-      height: 80px;
-      width: 80px;
-      line-height: 80px;
-      text-align: center;
-      background-color: red;
-      color: white;
-      margin: 20px;
-    }
-
-    .wi.light {
-      background-color: yellowgreen;
-    }
-
-    .wi.medium {
-      background-color: chocolate;
-    }
-  </style>
   <script src="weather.js"></script>
   <script src="weather-items.js"></script>
   <script src="ogl-data.js"></script>
@@ -46,31 +28,36 @@
         season: $('#select-season').val(),
       });
 
-      $('#result').text(JSON.stringify(result));
+      console.info(result);
 
-      $('#summary').empty();
+      $('#result-temperature-f').text(result.temperature);
+      $('#result-temperature-c').text(result.temperature.convertToCelsius());
 
+      $('#effects div').empty();
+
+      // checkif precipitation has in-game effects
       if (result.hasOwnProperty('precipitation')) {
-
-        console.log({
-          precipitationFormTypes,
-          precipitation: result.precipitation
-        });
 
         var precipitationSummary = precipitationFormTypes[result.precipitation.form.name];
 
-        $('#summary')
-          .append($('<div>', {
-            class: 'wi ' + precipitationSummary.class,
-            'data-toggle': 'tooltip',
-            'data-placement': 'right',
-            title: precipitationSummary.text
-          }).tooltip());
+        var $precipitationTile = $('<div>', {
+          class: 'wi ' + precipitationSummary.class,
+          'data-toggle': 'tooltip',
+          'data-placement': 'right',
+          title: precipitationSummary.text
+        }).tooltip();
+
+        $('#effects div')
+          .append($precipitationTile.append($('<span>', {
+            class: 'precipitation-time',
+            text: result.precipitation.start
+          })));
       }
 
+      // check if temperature has in-game effects
       if (result.hasOwnProperty('temperature')) {
         if (result.temperature <= -20) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold heavy',
               'data-toggle': 'tooltip',
@@ -78,7 +65,7 @@
               title: coldTemperatureTexts.extremeCold
             }).tooltip());
         } else if (result.temperature <= 0) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold medium',
               'data-toggle': 'tooltip',
@@ -86,7 +73,7 @@
               title: coldTemperatureTexts.severeCold
             }).tooltip());
         } else if (result.temperature <= 40) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold light',
               'data-toggle': 'tooltip',
@@ -94,7 +81,7 @@
               title: coldTemperatureTexts.veryCold
             }).tooltip());
         } else if (result.temperature >= 90) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-hot light',
               'data-toggle': 'tooltip',
@@ -102,7 +89,7 @@
               title: hotTemperatureTexts.veryHot
             }).tooltip());
         } else if (result.temperature >= 110) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-hot medium',
               'data-toggle': 'tooltip',
@@ -110,7 +97,7 @@
               title: hotTemperatureTexts.severeHot
             }).tooltip());
         } else if (result.temperature >= 140) {
-          $('#summary')
+          $('#effects div')
             .append($('<div>', {
               class: 'wi wi-hot heavy',
               'data-toggle': 'tooltip',
@@ -124,36 +111,60 @@
 </head>
 
 <body>
+  <h1 class="text-center">Pathfinder Weather Generator</h1>
 
-  <div>
-    <label for="select-climate">Climate:</label>
-    <select id="select-climate">
-      <option value="cold">cold</option>
-      <option value="temperate" selected="selected">temperate</option>
-      <option value="tropical">tropical</option>
-    </select>
-    <br/>
-    <label for="select-season">Season:</label>
-    <select id="select-season">
-      <option value="winter">winter</option>
-      <option value="spring" selected="selected">spring</option>
-      <option value="summer">summer</option>
-      <option value="fall">fall</option>
-    </select>
-    <br/>
-    <label for="select-elevation">Elevation:</label>
-    <select id="select-elevation">
-      <option value="seaLevel">sea level</option>
-      <option value="lowland" selected="selected">lowland</option>
-      <option value="highland">highlang</option>
-    </select>
-    <button onclick="readValues()">GO</button>
+  <div class="row">
+    <div class="col-sm-6 text-right">
+      <section id="input" class="text-left">
+        <h1>Your climate:</h1>
+        <label for="select-climate">Climate:</label>
+        <select id="select-climate">
+          <option value="cold">cold</option>
+          <option value="temperate" selected="selected">temperate</option>
+          <option value="tropical">tropical</option>
+        </select>
+        <br/>
+        <label for="select-season">Season:</label>
+        <select id="select-season">
+          <option value="winter">winter</option>
+          <option value="spring" selected="selected">spring</option>
+          <option value="summer">summer</option>
+          <option value="fall">fall</option>
+        </select>
+        <br/>
+        <label for="select-elevation">Elevation:</label>
+        <select id="select-elevation">
+          <option value="seaLevel">sea level</option>
+          <option value="lowland" selected="selected">lowland</option>
+          <option value="highland">highlang</option>
+        </select>
+        <button onclick="readValues()">GO</button>
+      </section>
+    </div>
+    <div class="col-sm-6">
+      <section id="output">
+        <h1>Outlining:</h1>
+        <article>
+          <label>Temperature:</label>
+          <span id="result-temperature-f"></span>°F /
+          <span id="result-temperature-c"></span>°C
+        </article>
+        <article>
+          <label>Wind:</label> coming soon.
+        </article>
+      </section>
+    </div>
   </div>
 
-  <div id="result"></div>
+  <div class="row">
+    <div class="col-sm-12">
+      <section id="effects">
+        <h1>In-game effects:</h1>
+        <div>
 
-  <div id="summary">
-
+        </div>
+      </section>
+    </div>
   </div>
 
   <!-- Optional JavaScript -->

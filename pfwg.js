@@ -1,3 +1,7 @@
+Number.prototype.convertToCelsius = function convertToCelsius() {
+    return Math.round((this - 32) / 1.8);
+};
+
 var throwDie = function throwDie(nbFaces) {
     return 1 + Math.floor(Math.random() * nbFaces);
 };
