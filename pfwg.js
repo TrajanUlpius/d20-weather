@@ -4,13 +4,12 @@ Number.prototype.convertToCelsius = function convertToCelsius() {
 
 Number.prototype.toAmPmString = function toAmPmString() {
 
-var hour;
-if(this === 0 || this === 12) {
-    hour = 12;
-}
-else {
-    hour = this%12;
-}
+    var hour;
+    if (this === 0 || this === 12) {
+        hour = 12;
+    } else {
+        hour = this % 12;
+    }
 
     return hour + (this >= 12 ? ' pm' : ' am');
 };
@@ -49,16 +48,26 @@ var readDiceFormula = function readDiceFormula(formula) {
 };
 
 var generateWeather = function generateWeather(input) {
-    var base = new Weather (
+    var base = new Weather(
         climate[input.climate].temperature[input.season] + (elevation[input.elevation].temperatureAdjustment || 0),
         season[input.season][input.climate] + (elevation[input.elevation].precipitationFrequencyAdjustment || 0) + (climate[input.climate].precipitationFrequencyAdjustment || 0),
         elevation[input.elevation].precipitationIntensity + (climate[input.climate].precipitationIntensityAdjustment || 0)
     );
 
+    // roll for clouds
+    base.cloudCheck = throwDie(100);
+    base.cloud = {
+        form: cloudCover.filter(effect => base.cloudCheck <= effect.probability)[0]
+    };
+
     // add some variation to the temperature
     base.temperatureVariationCheck = throwDie(100);
     var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
     base.temperature += readDiceFormula(temperatureVariation.variation);
+    // add some variation due to cloud cover
+    if (base.cloud.form.name === 'Cloudcast') {
+        base.temperature += (input.season === 'spring' || input.season === 'summer') ? -10 : 10;
+    }
     base.temperatureNight = base.temperature + readDiceFormula('-3d6');
 
     // is there any precipitation ?
@@ -82,6 +91,13 @@ var generateWeather = function generateWeather(input) {
         // compute duration
         base.precipitation.duration = readDiceFormula(base.precipitation.form.duration);
     }
+
+    // roll for wind effect
+    base.windspeedCheck = throwDie(100);
+    base.wind = {
+        form: windspeedEffects.filter(effect => base.windspeedCheck <= effect.probability)[0],
+        direction: windDirection[throwDie(16) - 1]
+    };
 
     return base;
 };

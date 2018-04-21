@@ -156,6 +156,11 @@ var elevation = {
         precipitationIntensity: precipitationIntensityType.medium,
         temperatureAdjustment: -10,
         precipitationFrequencyAdjustment: -1
+    },
+    highpeak: {
+        precipitationIntensity: precipitationIntensityType.medium,
+        temperatureAdjustment: -10,
+        precipitationFrequencyAdjustment: -1
     }
 };
 
@@ -508,3 +513,75 @@ var precipitationForm = {
         ]
     }
 };
+
+var windspeedEffects = [
+    {
+        probability: 50,
+        name: 'light',
+        speed: '0-10 mph',
+        penaltyRanged: 0,
+        penaltySiege: 0,
+        penaltySkill: 0,
+        checkSize: '',
+        blownAwaySize: '',
+        beaufortScale: 1
+    },
+    {
+        probability: 80,
+        name: 'moderate',
+        speed: '11-20 mph',
+        penaltyRanged: 0,
+        penaltySiege: 0,
+        penaltySkill: 0,
+        checkSize: '',
+        blownAwaySize: '',
+        beaufortScale: 4
+    },
+    {
+        probability: 90,
+        name: 'strong',
+        speed: '21-30 mph',
+        penaltyRanged: -2,
+        penaltySiege: 0,
+        penaltySkill: -2,
+        checkSize: 'Tiny',
+        blownAwaySize: '',
+        beaufortScale: 6
+    },
+    {
+        probability: 95,
+        name: 'severe',
+        speed: '31-50 mph',
+        penaltyRanged: -4,
+        penaltySiege: 0,
+        penaltySkill: -4,
+        checkSize: 'Small',
+        blownAwaySize: 'Tiny',
+        beaufortScale: 8
+    },
+    {
+        probability: 100,
+        name: 'windstorm',
+        speed: '51+ mph',
+        penaltyRanged: 'Impossible',
+        penaltySiege: -4,
+        penaltySkill: -8,
+        checkSize: 'Medium',
+        blownAwaySize: 'Small',
+        beaufortScale: 10
+    }
+];
+
+var cloudCover = [{
+    probability: 50,
+    name: 'None'
+},{
+    probability: 70,
+    name: 'Light clouds'
+},{
+    probability: 85,
+    name: 'Medium clouds'
+},{
+    probability: 100,
+    name: 'Overcast'
+}]

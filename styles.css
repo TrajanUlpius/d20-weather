@@ -17,7 +17,7 @@ section#effects {
   margin-top: 50px;
   width: 100%;
 }
-.wi {
+#weather-effects .wi {
   font-size: 45px;
   height: 80px;
   width: 80px;
@@ -28,13 +28,13 @@ section#effects {
   margin: 20px;
   position: relative;
 }
-.wi.light {
+#weather-effects .wi.light {
   background-color: yellowgreen;
 }
-.wi.medium {
+#weather-effects .wi.medium {
   background-color: chocolate;
 }
-.wi .precipitation-time {
+#weather-effects .wi .precipitation-time {
   color: black;
   position: absolute;
   left: 0;
