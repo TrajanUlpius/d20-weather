@@ -52,27 +52,30 @@
       // checkif precipitation has in-game effects
       if (result.hasOwnProperty('precipitation')) {
 
-        var precipitationSummary = precipitationFormTypes[result.precipitation.form.name];
-
         if (result.precipitation.form.name.indexOf('Fog') > 0) {
-          $('#effects > div').prepend($('<header>', {
+          $('#weather-effects').prepend($('<header>', {
             text: precipitationTexts.allFog
           }));
         }
 
-        var $precipitationTile = $('<div>', {
-          class: 'wi ' + precipitationSummary.class,
-          'data-toggle': 'tooltip',
-          'data-placement': 'right',
-          title: precipitationSummary.text
-        }).tooltip();
+        var $tiles = result.precipitation.map(p => function (p) {
+          var $tile = $('<div>', {
+            class: 'wi ' + result.precipitation.form.class,
+            'data-toggle': 'tooltip',
+            'data-placement': 'right',
+            title: result.precipitation.form.text
+          }).tooltip();
 
-        $('#effects > div')
-          .append($precipitationTile.append($('<span>', {
+          $tile.append($('<span>', {
             class: 'precipitation-time',
             text: result.precipitation.start.toAmPmString() + ' - ' + (result.precipitation.start + result.precipitation
               .duration).toAmPmString()
-          })));
+          }));
+
+          return $tile;
+        });
+
+        $('#weather-effects').append($tiles);
       }
 
       // check if temperature has in-game effects
@@ -83,7 +86,7 @@
 
           displayColdWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold heavy',
               'data-toggle': 'tooltip',
@@ -94,7 +97,7 @@
 
           displayColdWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold medium',
               'data-toggle': 'tooltip',
@@ -105,7 +108,7 @@
 
           displayColdWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-snowflake-cold light',
               'data-toggle': 'tooltip',
@@ -116,7 +119,7 @@
 
           displayHeatWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-hot light',
               'data-toggle': 'tooltip',
@@ -127,7 +130,7 @@
 
           displayHeatWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-hot medium',
               'data-toggle': 'tooltip',
@@ -138,7 +141,7 @@
 
           displayHeatWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-hot heavy',
               'data-toggle': 'tooltip',
@@ -154,7 +157,7 @@
 
           displayColdWarning = true;
 
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-night-clear heavy',
               'data-toggle': 'tooltip',
@@ -162,7 +165,7 @@
               title: coldTemperatureTexts.extremeCold
             }).tooltip());
         } else if (result.temperatureNight <= 0 && result.temperature > 0) {
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-night-clear medium',
               'data-toggle': 'tooltip',
@@ -170,7 +173,7 @@
               title: coldTemperatureTexts.severeCold
             }).tooltip());
         } else if (result.temperatureNight <= 40 && result.temperature > 40) {
-          $('#effects > div')
+          $('#weather-effects')
             .append($('<div>', {
               class: 'wi wi-night-clear light',
               'data-toggle': 'tooltip',
@@ -181,12 +184,12 @@
       }
 
       if (displayColdWarning === true) {
-        $('#effects > div').prepend($('<header>', {
-          text: coldTemperatureTexts.all
+        $('#weather-effects').prepend($('<header>', {
+          html: coldTemperatureTexts.all
         }));
       } else if (displayHeatWarning === true) {
-        $('#effects > div').prepend($('<header>', {
-          text: hotTemperatureTexts.all
+        $('#weather-effects').prepend($('<header>', {
+          html: hotTemperatureTexts.all
         }));
       }
 
@@ -195,7 +198,7 @@
 
         // TODO: handle windstorms
 
-        $('#effects > div')
+        $('#weather-effects')
           .append($('<div>', {
             class: 'wi wi-wind-beaufort-' + result.wind.form.beaufortScale,
             'data-toggle': 'tooltip',
@@ -205,8 +208,8 @@
       }
 
       // default display
-      if ($('#effects > div *').length === 0) {
-        $('#effects > div').append($('<h2>', {
+      if ($('#weather-effects *').length === 0) {
+        $('#weather-effects').append($('<h2>', {
           text: 'None'
         }));
       }
@@ -281,6 +284,15 @@
 
         </div>
       </section>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Todo: simple list of all weather events</h3>
+      <div id="list-effects">
+
+      </div>
     </div>
   </div>
 

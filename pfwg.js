@@ -60,6 +60,13 @@ var generateWeather = function generateWeather(input) {
         form: cloudCover.filter(effect => base.cloudCheck <= effect.probability)[0]
     };
 
+    // roll for wind effect
+    base.windspeedCheck = throwDie(100);
+    base.wind = {
+        form: windspeedEffects.filter(effect => base.windspeedCheck <= effect.probability)[0],
+        direction: windDirection[throwDie(16) - 1]
+    };
+
     // add some variation to the temperature
     base.temperatureVariationCheck = throwDie(100);
     var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
@@ -82,22 +89,59 @@ var generateWeather = function generateWeather(input) {
 
         base.precipitationFormCheck = throwDie(100);
         var precipitationFormArray = precipitationForm[Object.keys(precipitationForm)[base.precipitationIntensity]][base.temperature <= 32 ? 'frozen' : 'unfrozen'];
+        var precipitationForm = precipitationFormArray.filter(form => base.precipitationFormCheck <= form.probability)[0];
 
-        base.precipitation = {
-            form: precipitationFormArray.filter(form => base.precipitationFormCheck <= form.probability)[0],
-            start: throwDie(24) - 1
-        };
+        base.precipitation = [{
+            form: precipitationFormTypes[precipitationForm.name],
+            start: throwDie(24) - 1,
+            duration: readDiceFormula(precipitationForm.duration)
+        }];
 
-        // compute duration
-        base.precipitation.duration = readDiceFormula(base.precipitation.form.duration);
+        // additional computation for thunderstorms
+        if (precipitationForm.name === 'thunderstorm') {
+            // thunderstorm features heavy rain
+            base.precipitation.push({
+                form: precipitationFormTypes.heavyRain
+            });
+
+            // 40 % chance of hail
+            if (throwDie(100) > 60) {
+                base.precipitation.push({
+                    form: precipitationFormTypes.hail
+                });
+            }
+
+            // thunderstorm features winds
+            base.rolls.thunderstormWindCheck = throwDie(100);
+            var windforce = thunderStormWindfore.filter(form => base.rolls.thunderstormWindCheck <= form.probability)[0];
+            base.wind.form = windspeedEffects.filter(effect => effect.name === windforce)[0];
+            // thunderstorm features lightning
+            base.precipitation.push({
+                form: precipitationFormTypes.lightning
+            });
+
+            // There is a 20 % chance that a thunderstorm of any strength in the desert also generates a haboob.
+            if (throwDie(100) > 80) {
+                base.precipitation.push({
+                    form: precipitationFormTypes.sandstorm
+                });
+            }
+
+            if (base.wind.form.name === 'windstorm') {
+                if (throwDie(100) > 90) {
+                    base.precipitation.push({
+                        form: precipitationFormTypes.tornado
+                    });
+                }
+
+                if (throwDie(100) > 80 && base.temperature > 85) {
+                    base.precipitation.push({
+                        form: precipitationFormTypes.huricane
+                    });
+                }
+            }
+        }
     }
-
-    // roll for wind effect
-    base.windspeedCheck = throwDie(100);
-    base.wind = {
-        form: windspeedEffects.filter(effect => base.windspeedCheck <= effect.probability)[0],
-        direction: windDirection[throwDie(16) - 1]
-    };
 
     return base;
 };

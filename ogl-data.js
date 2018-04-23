@@ -242,8 +242,47 @@ var precipitationFormTypes = {
         name: 'thunderstorm',
         text: precipitationTexts.thunderstorm,
         class: 'wi-thunderstorm heavy'
+    },
+    lightning: {
+        name: 'lightning',
+        text: precipitationTexts.lightning,
+        class: 'wi-lightning heavy'
+    },
+    blizzard: {
+        name: 'blizzard',
+        text: precipitationTexts.blizzard,
+        class: 'wi-snow-wind heavy'
+    },
+    hail: {
+        name: 'hail',
+        text: precipitationTexts.hail,
+        class: 'wi-hail heavy'
+    },
+    hurricane: {
+        name: 'hurricane',
+        text: precipitationTexts.hurricane,
+        class: 'wi-hurricane heavy'
+    },
+    sandstorm: {
+        name: 'sandstorm',
+        text: precipitationTexts.sandstorm,
+        class: 'wi-sandstorm heavy'
+    },
+    thundersnow: {
+        name: 'thundersnow',
+        text: precipitationTexts.thundersnow,
+        class: 'wi-day-snow-thunderstorm heavy'
+    },
+    tornado: {
+        name: 'tornado',
+        text: precipitationTexts.tornado,
+        class: 'wi-tornado heavy'
+    },
+    wildfire: {
+        name: 'wildfire',
+        text: precipitationTexts.wildfire,
+        class: 'wi-fire heavy'
     }
-
 };
 
 var precipitationForm = {
@@ -513,6 +552,17 @@ var precipitationForm = {
         ]
     }
 };
+
+var thunderStormWindfore = [{
+    probability: 50,
+    name: 'strong'
+},{
+    probability: 90,
+    name: 'severe'
+},{
+    probability: 100,
+    name: 'windstorm'
+}];
 
 var windspeedEffects = [
     {
