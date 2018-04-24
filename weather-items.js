@@ -42,8 +42,8 @@ var altitudeTexts = {
 
 var windDirection = ['n', 'nne', 'ne', 'ene', 'e', 'ese', 'se', 'sse', 's', 'ssw', 'sw', 'wsw', 'w', 'wnw', 'nw', 'nnw'];
 
-
-
-
-
-
+var windTexts = {
+    all: '<b>Check Size:</b> Creatures of the listed size or smaller are unable to move forward against the force of the wind unless they succeed at a DC 10 Strength check (on the ground) or a DC 20 Fly check if airborne.<br/>' +
+        '<b>Blown Away Size:</b> Creatures of the listed size on the ground are knocked prone, roll 1d4×10 feet, and take 2d6 points of nonlethal damage, unless they succeed on a DC 15 Strength check. Flying creatures of the listed size are blown back 2d6×10 feet and take 2d6 points of nonlethal damage due to battering and buffeting, unless they succeed at a DC 25 Fly check.<br/>' +
+        '<b>Skill Penalty:</b> This is the penalty for skill checks that can be affected by the wind. These penalties always apply on Fly checks and sound-based Perception checks, but GMs may also wish to apply them on Acrobatics checks, Climb checks, and any other ability or skill checks that could be adversely affected by winds.'
+}

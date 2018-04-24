@@ -9,6 +9,7 @@ section {
   background-color: beige;
   display: inline-block;
   padding: 20px;
+  margin-bottom: 50px;
 }
 section h1 {
   font-size: 1.7em;
@@ -17,7 +18,7 @@ section#effects {
   margin-top: 50px;
   width: 100%;
 }
-#weather-effects .wi {
+.picto-list .wi {
   font-size: 45px;
   height: 80px;
   width: 80px;
@@ -28,17 +29,25 @@ section#effects {
   margin: 20px;
   position: relative;
 }
-#weather-effects .wi.light {
+.picto-list .wi.light {
   background-color: yellowgreen;
 }
-#weather-effects .wi.medium {
+.picto-list .wi.medium {
   background-color: chocolate;
 }
-#weather-effects .wi .precipitation-time {
+.picto-list .wi .precipitation-time {
   color: black;
   position: absolute;
   left: 0;
   bottom: -50px;
   font-size: 16px;
   white-space: nowrap;
+}
+ul.wind-effects {
+  padding-left: 0;
+  list-style: none;
+  text-align: left;
+}
+.hidden {
+  display: none;
 }
