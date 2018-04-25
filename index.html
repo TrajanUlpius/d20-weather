@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Weather Generator</title>
+  <title>d20 Weather Generator</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons-wind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
   <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+    crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="styles.css">
 
   <script src="weather.js"></script>
@@ -234,7 +238,7 @@
 </head>
 
 <body>
-  <h1 class="text-center">Pathfinder Weather Generator</h1>
+  <h1 class="text-center">d20 Weather Generator</h1>
 
   <div class="row">
     <div class="col-sm-6 text-right">
@@ -292,29 +296,34 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-12">
-      <section id="effects">
-        <h1>In-game effects:</h1>
-        <header id="altitude-effects"></header>
-        <div id="weather-effects" class="picto-list">
+    <section class="col-sm-12">
+      <h1>In-game effects:</h1>
+      <header id="altitude-effects"></header>
+      <div id="weather-effects" class="picto-list">
 
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 
   <div class="row">
-    <div class="col-sm-12">
-      <section>
-        <h4>Possible weather events
-          <button onclick="$('#list-effects').toggleClass('hidden')">show/hide</button>
-        </h4>
-        <div id="list-effects" class="picto-list hidden">
+    <section class="col-sm-12">
+      <h4>Possible weather events
+        <i class="fas fa-eye" onclick="$('#list-effects').toggleClass('hidden'); $(this).toggleClass('fa-eye').toggleClass('fa-eye-slash')"></i>
+      </h4>
+      <div id="list-effects" class="picto-list hidden">
 
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
+
+  <footer class="text-right">made with
+    <i class="fas fa-heart" style="color: red"></i> and
+    <a href="https://en.wikipedia.org/wiki/Open_Game_License">OGL</a>
+    <br /> Code is here:
+    <a href="https://github.com/TrajanUlpius/d20-weather">
+      <i class="fab fa-github"></i>
+    </a>
+  </footer>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
