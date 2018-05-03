@@ -64,18 +64,14 @@
 
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext("2d");
-      ctx.fillStyle = "beige";
-      ctx.fillRect(0, 0, 180, 150);
       ctx.fillStyle = "rgb(33, 37, 41)";
       ctx.font = "16px Alegreya";
-      ctx.fillText("Temperature: " + result.temperature + "°F / " + result.temperature.convertToCelsius() + "°C", 10,
+      ctx.fillText("T°: " + result.temperature + "°F / " + result.temperature.convertToCelsius() + "°C", 10,
         25);
-      ctx.fillText("At night: " + result.temperatureNight + "°F / " + result.temperatureNight.convertToCelsius() +
+      ctx.fillText("Night: " + result.temperatureNight + "°F / " + result.temperatureNight.convertToCelsius() +
         "°C", 10, 50);
       ctx.fillText("Wind: " + result.wind.form.speed, 10, 75);
-      ctx.fillText("Clouds: " + result.cloud.form.name, 10, 100);
-      ctx.strokeStyle = "brown";
-      ctx.strokeRect(0, 0, 180, 150);
+      ctx.fillText("Clouds: " + result.cloud.form.name.replace(/clouds$/i, '').trim(), 10, 100);
 
       document.getElementById('canvas-thumbnail').src = canvas.toDataURL();
       $('#canvas-thumbnail').tooltip();
@@ -310,7 +306,7 @@
           <span id="result-clouds"></span>
         </article>
 
-        <canvas id="canvas" width="180" height="150"></canvas>
+        <canvas id="canvas" width="140" height="140"></canvas>
         <img id="canvas-thumbnail" data-toggle="tooltip" title="Right-click then copy or save the image" />
         <i id="canvas-thumbnail-picto" class="fas fa-paste"></i>
 
