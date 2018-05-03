@@ -47,3 +47,11 @@ ul.wind-effects {
 .hidden {
   display: none;
 }
+.tooltip-inner {
+  font-family: 'Alegreya', serif;
+  background-color: beige;
+  color: black;
+}
+.arrow::before {
+  border-color: beige !important;
+}

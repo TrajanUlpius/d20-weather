@@ -39,7 +39,7 @@
       return $('<div>', {
         class: 'wi ' + p.form.class,
         'data-toggle': 'tooltip',
-        'data-placement': 'right',
+
         title: p.form.text,
         'data-precipitation': p.form.name
       }).append($time);
@@ -100,7 +100,7 @@
             .append($('<div>', {
               class: 'wi wi-snowflake-cold heavy',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.extremeCold
             }).tooltip());
         } else if (result.temperature <= 0) {
@@ -111,7 +111,7 @@
             .append($('<div>', {
               class: 'wi wi-snowflake-cold medium',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.severeCold
             }).tooltip());
         } else if (result.temperature <= 40) {
@@ -122,7 +122,7 @@
             .append($('<div>', {
               class: 'wi wi-snowflake-cold light',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.veryCold
             }).tooltip());
         } else if (result.temperature >= 90) {
@@ -133,7 +133,7 @@
             .append($('<div>', {
               class: 'wi wi-hot light',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: hotTemperatureTexts.veryHot
             }).tooltip());
         } else if (result.temperature >= 110) {
@@ -144,7 +144,7 @@
             .append($('<div>', {
               class: 'wi wi-hot medium',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: hotTemperatureTexts.severeHot
             }).tooltip());
         } else if (result.temperature >= 140) {
@@ -155,7 +155,7 @@
             .append($('<div>', {
               class: 'wi wi-hot heavy',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: hotTemperatureTexts.extremeHot
             }).tooltip());
         }
@@ -171,7 +171,7 @@
             .append($('<div>', {
               class: 'wi wi-night-clear heavy',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.extremeCold
             }).tooltip());
         } else if (result.temperatureNight <= 0 && result.temperature > 0) {
@@ -179,7 +179,7 @@
             .append($('<div>', {
               class: 'wi wi-night-clear medium',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.severeCold
             }).tooltip());
         } else if (result.temperatureNight <= 40 && result.temperature > 40) {
@@ -187,7 +187,7 @@
             .append($('<div>', {
               class: 'wi wi-night-clear light',
               'data-toggle': 'tooltip',
-              'data-placement': 'right',
+
               title: coldTemperatureTexts.veryCold
             }).tooltip());
         }
@@ -215,7 +215,7 @@
           .append($('<div>', {
             class: 'wi wi-wind-beaufort-' + result.wind.form.beaufortScale,
             'data-toggle': 'tooltip',
-            'data-placement': 'right',
+
           }).tooltip({
             html: true,
             title: '<b>' + result.wind.form.name + '</b>' +
@@ -297,10 +297,19 @@
 
   <div class="row">
     <section class="col-sm-12">
-      <h1>In-game effects:</h1>
-      <header id="altitude-effects"></header>
-      <div id="weather-effects" class="picto-list">
+      <div class="row">
+        <div class="col-sm-8">
+          <h1>In-game effects:</h1>
+          <header id="altitude-effects"></header>
+          <div id="weather-effects" class="picto-list">
 
+          </div>
+          <div class="col-sm-4">
+            <div id="selected-weather-effects">
+
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -338,7 +347,7 @@
       $('<div>', {
         class: 'wi ' + precipitationForms[key].class,
         'data-toggle': 'tooltip',
-        'data-placement': 'right',
+
         title: precipitationForms[key].text
       }));
     $listTiles.forEach($t => $t.tooltip());
