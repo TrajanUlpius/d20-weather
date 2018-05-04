@@ -11,9 +11,35 @@ section {
     display: inline-block;
     padding: 20px;
     margin-bottom: 50px;
+    position: relative;
     h1 {
         font-size: 1.7em;
     }
+}
+
+canvas {
+    display: none;
+}
+
+#canvas-thumbnail,
+#canvas-thumbnail-picto {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 20px;
+    width: 20px;
+    transition: 200ms;
+    transition-timing-function: ease-in-out;
+    -webkit-transition: 200ms;
+    -webkit-transition-timing-function: ease-in-out;
+    -moz-transition: 200ms;
+    -moz-transition-timing-function: ease-in-out;
+}
+
+#canvas-thumbnail:hover + #canvas-thumbnail-picto,
+#canvas-thumbnail-picto:hover {
+height: 0;
+width: 0;
 }
 
 .picto-list {
@@ -42,6 +68,10 @@ section {
             white-space: nowrap;
         }
     }
+}
+
+.fa-eye {
+    cursor: pointer;
 }
 
 ul.wind-effects {
