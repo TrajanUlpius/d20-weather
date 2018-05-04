@@ -14,9 +14,7 @@ var drawCanvas = function drawCanvas(weather) {
     $('#canvas-thumbnail').tooltip();
 };
 
-var buildTile = function buildTile(p, clickEvent) {
-
-    console.log('coucou');
+var buildTile = function buildTile(p) {
 
     var $time;
     if (p.hasOwnProperty('start') && p.hasOwnProperty('duration')) {
@@ -31,7 +29,9 @@ var buildTile = function buildTile(p, clickEvent) {
         'data-toggle': 'tooltip',
         title: p.form.text,
         'data-precipitation': p.form.name
-    }).append($time).on('click', clickEvent);
+    }).append($time).on('click', function (e) {
+        $('#selected-weather-effects').html($(e.target).data('original-title'));
+    });
 };
 
 var readValues = function readValues() {
@@ -66,9 +66,7 @@ var readValues = function readValues() {
     // checkif precipitation has in-game effects
     if (result.hasOwnProperty('precipitation')) {
 
-        var $tiles = result.precipitation.map(p => buildTile(p, function(e) {
-            $('#selected-weather-effects').html($(e.target).data('original-title'));
-        }));
+        var $tiles = result.precipitation.map(p => buildTile(p));
 
         $tiles.forEach($t => $t.tooltip());
 
@@ -90,66 +88,66 @@ var readValues = function readValues() {
             displayColdWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-snowflake-cold heavy',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.extremeCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-snowflake-cold heavy',
+                        text: coldTemperatureTexts.extremeCold
+                    }
                 }).tooltip());
         } else if (result.temperature <= 0) {
 
             displayColdWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-snowflake-cold medium',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.severeCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-snowflake-cold medium',
+                        text: coldTemperatureTexts.severeCold
+                    }
                 }).tooltip());
         } else if (result.temperature <= 40) {
 
             displayColdWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-snowflake-cold light',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.veryCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-snowflake-cold light',
+                        text: coldTemperatureTexts.severeCold
+                    }
                 }).tooltip());
         } else if (result.temperature >= 90) {
 
             displayHeatWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-hot light',
-                    'data-toggle': 'tooltip',
-
-                    title: hotTemperatureTexts.veryHot
+                .append(buildTile({
+                    form: {
+                        class: 'wi-hot light',
+                        text: hotTemperatureTexts.veryHot
+                    }
                 }).tooltip());
         } else if (result.temperature >= 110) {
 
             displayHeatWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-hot medium',
-                    'data-toggle': 'tooltip',
-
-                    title: hotTemperatureTexts.severeHot
+                .append(buildTile({
+                    form: {
+                        class: 'wi-hot medium',
+                        text: hotTemperatureTexts.severeHot
+                    }
                 }).tooltip());
         } else if (result.temperature >= 140) {
 
             displayHeatWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-hot heavy',
-                    'data-toggle': 'tooltip',
-
-                    title: hotTemperatureTexts.extremeHot
+                .append(buildTile({
+                    form: {
+                        class: 'wi-hot heavy',
+                        text: hotTemperatureTexts.extremeHot
+                    }
                 }).tooltip());
         }
     }
@@ -161,27 +159,27 @@ var readValues = function readValues() {
             displayColdWarning = true;
 
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-night-clear heavy',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.extremeCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-night-clear heavy',
+                        text: coldTemperatureTexts.extremeCold
+                    }
                 }).tooltip());
         } else if (result.temperatureNight <= 0 && result.temperature > 0) {
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-night-clear medium',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.severeCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-night-clear medium',
+                        text: coldTemperatureTexts.severeCold
+                    }
                 }).tooltip());
         } else if (result.temperatureNight <= 40 && result.temperature > 40) {
             $('#weather-effects')
-                .append($('<div>', {
-                    class: 'wi wi-night-clear light',
-                    'data-toggle': 'tooltip',
-
-                    title: coldTemperatureTexts.veryCold
+                .append(buildTile({
+                    form: {
+                        class: 'wi-night-clear light',
+                        text: coldTemperatureTexts.veryCold
+                    }
                 }).tooltip());
         }
     }
@@ -204,19 +202,22 @@ var readValues = function readValues() {
             html: windTexts.all
         }));
 
-        $('#weather-effects')
-            .append($('<div>', {
-                class: 'wi wi-wind-beaufort-' + result.wind.form.beaufortScale,
-                'data-toggle': 'tooltip',
+        var beaufortTooltip = '<b>' + result.wind.form.name + '</b>' +
+            '<ul class="wind-effects"><li>ranged attacks: ' + result.wind.form.penaltyRanged +
+            '</li><li>siege attacks: ' + result.wind.form.penaltySiege +
+            '</li><li>skills: ' + result.wind.form.penaltySkill +
+            '</li><li>checkSize: ' + result.wind.form.checkSize +
+            '</li><li>blownAwaySize: ' + result.wind.form.blownAwaySize + '</li></ul>';
 
+        $('#weather-effects')
+            .append(buildTile({
+                form: {
+                    class: 'wi-wind-beaufort-' + result.wind.form.beaufortScale,
+                    text: beaufortTooltip
+                }
             }).tooltip({
                 html: true,
-                title: '<b>' + result.wind.form.name + '</b>' +
-                    '<ul class="wind-effects"><li>ranged attacks: ' + result.wind.form.penaltyRanged +
-                    '</li><li>siege attacks: ' + result.wind.form.penaltySiege +
-                    '</li><li>skills: ' + result.wind.form.penaltySkill +
-                    '</li><li>checkSize: ' + result.wind.form.checkSize +
-                    '</li><li>blownAwaySize: ' + result.wind.form.blownAwaySize + '</li></ul>'
+                title: beaufortTooltip
             }));
     }
 

@@ -209,7 +209,7 @@ var precipitationForms = {
   drizzle: {
     name: "drizzle",
     text: precipitationTexts.drizzle,
-    class: "wi-day-rain light"
+    class: "wi-rain light"
   },
   rain: {
     name: "rain",
@@ -219,12 +219,12 @@ var precipitationForms = {
   heavyRain: {
     name: "heavy rain",
     text: precipitationTexts.heavyRain,
-    class: "wi-day-rain heavy"
+    class: "wi-rain heavy"
   },
   sleet: {
     name: "sleet",
     text: precipitationTexts.sleet,
-    class: "wi-sleet heavy"
+    class: "wi-sleet light"
   },
   lightSnow: {
     name: "light snow",
@@ -239,7 +239,7 @@ var precipitationForms = {
   heavySnow: {
     name: "heavy snow",
     text: precipitationTexts.heavySnow,
-    class: "wi-day-rain heavy"
+    class: "wi-snow heavy"
   },
   thunderstorm: {
     name: "thunderstorm",

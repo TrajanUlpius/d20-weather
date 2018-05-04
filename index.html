@@ -102,7 +102,7 @@
 
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 left-border">
           <div id="selected-weather-effects">
 
           </div>
@@ -143,9 +143,8 @@
     var $listTiles = Object.keys(precipitationForms).map(key =>
       $('<div>', {
         class: 'wi ' + precipitationForms[key].class,
-        'data-toggle': 'tooltip',
-
-        title: precipitationForms[key].text
+        title: precipitationForms[key].text,
+        'data-toggle': 'tooltip'
       }));
     $listTiles.forEach($t => $t.tooltip());
     $('#list-effects').append($listTiles);

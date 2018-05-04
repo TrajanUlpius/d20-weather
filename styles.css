@@ -18,6 +18,9 @@ section h1 {
 canvas {
   display: none;
 }
+.left-border {
+  border-left: solid 1px brown;
+}
 #canvas-thumbnail,
 #canvas-thumbnail-picto {
   position: absolute;
@@ -75,9 +78,10 @@ ul.wind-effects {
 }
 .tooltip-inner {
   font-family: 'Alegreya', serif;
-  background-color: beige;
+  background-color: #d6d6cb;
   color: black;
 }
 .arrow::before {
-  border-color: beige !important;
+  border-top-color: #d6d6cb !important;
+  border-bottom-color: #d6d6cb !important;
 }
