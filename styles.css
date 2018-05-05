@@ -14,11 +14,6 @@ section {
 section h1 {
   font-size: 1.7em;
 }
-section#input,
-section#output {
-  margin-left: -15px;
-  margin-right: -15px;
-}
 .selected-weather-effects {
   display: none;
 }
@@ -94,9 +89,15 @@ ul.wind-effects {
   background-color: #d6d6cb;
   color: black;
 }
-.arrow::before {
+.bs-tooltip-top .arrow::before,
+.bs-tooltip-bottom .arrow::before {
   border-top-color: #d6d6cb !important;
   border-bottom-color: #d6d6cb !important;
+}
+.bs-tooltip-left .arrow::before,
+.bs-tooltip-right .arrow::before {
+  border-left-color: #d6d6cb !important;
+  border-right-color: #d6d6cb !important;
 }
 #modal .modal-content {
   background-image: url('parchment-texture.png');
@@ -104,14 +105,6 @@ ul.wind-effects {
   border-style: none;
 }
 @media (min-width: 576px) {
-  section {
-    display: inline-block;
-  }
-  section#input,
-  section#output {
-    margin-left: 0;
-    margin-right: 0;
-  }
   .selected-weather-effects {
     display: block;
   }
