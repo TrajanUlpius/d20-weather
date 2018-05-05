@@ -30,7 +30,13 @@ var buildTile = function buildTile(p) {
         title: p.form.text,
         'data-precipitation': p.form.name
     }).append($time).on('click', function (e) {
-        $('#selected-weather-effects').html($(e.target).data('original-title'));
+        if ($(window).width() > 576) {
+            var $target = $(e.target);
+            $target.parents('section').find('.selected-weather-effects').html($target.data('original-title'));
+        }
+        else {
+            $('#modal').modal('show', $(this));
+        }
     });
 };
 
@@ -66,9 +72,7 @@ var readValues = function readValues() {
     // checkif precipitation has in-game effects
     if (result.hasOwnProperty('precipitation')) {
 
-        var $tiles = result.precipitation.map(p => buildTile(p));
-
-        $tiles.forEach($t => $t.tooltip());
+        var $tiles = result.precipitation.map(p => buildTile(p).tooltip());
 
         if ($tiles.filter($t => $t.data('precipitation').indexOf('fog') > 0).length > 0) {
             $('#weather-effects').prepend($('<header>', {

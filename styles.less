@@ -8,13 +8,21 @@ body {
 section {
     border: solid 2px brown;
     background-color: beige;
-    display: inline-block;
     padding: 20px;
     margin-bottom: 50px;
     position: relative;
     h1 {
         font-size: 1.7em;
     }
+    &#input,
+    &#output {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+}
+
+.selected-weather-effects {
+    display: none;
 }
 
 canvas {
@@ -44,6 +52,13 @@ canvas {
 #canvas-thumbnail-picto:hover {
     height: 0;
     width: 0;
+}
+
+#canvas-thumbnail:not([src]),
+#canvas-thumbnail[src=""],
+#canvas-thumbnail:not([src])+#canvas-thumbnail-picto,
+#canvas-thumbnail[src=""]+#canvas-thumbnail-picto {
+    display: none;
 }
 
 .picto-list {
@@ -97,4 +112,25 @@ ul.wind-effects {
 .arrow::before {
     border-top-color: #d6d6cb !important;
     border-bottom-color: #d6d6cb !important;
+}
+
+#modal .modal-content {
+    background-image: url('parchment-texture.png');
+    background-color: beige;
+    border-style: none;
+}
+
+@media (min-width: 576px) {
+    section {
+        display: inline-block;
+        &#input,
+        &#output {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .selected-weather-effects {
+        display: block;
+    }
 }
