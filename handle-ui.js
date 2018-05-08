@@ -1,14 +1,25 @@
-var drawCanvas = function drawCanvas(weather) {
+var drawCanvas = function drawCanvas(weather, selectedDate) {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // TODO: make this color changeable. Until then, leave the bakcground transparent
+    // ctx.fillStyle = "rgba(245,245,220,0.35)";
+    // ctx.fillRect(0,0,canvas.width, canvas.height);
     ctx.fillStyle = "rgb(33, 37, 41)";
+
+    var weatherDetailsYOrigin = 0;
+    if (typeof (selectedDate) !== undefined) {
+        // write date
+        ctx.font = "18px Alegreya";
+        ctx.fillText(selectedDate, 10, 25);
+        weatherDetailsYOrigin = 35;
+    }
+    // write weather informations
     ctx.font = "16px Alegreya";
-    ctx.fillText("T°: " + weather.temperature + "°F / " + weather.temperature.convertToCelsius() + "°C", 10,
-        25);
-    ctx.fillText("Night: " + weather.temperatureNight + "°F / " + weather.temperatureNight.convertToCelsius() +
-        "°C", 10, 50);
-    ctx.fillText("Wind: " + weather.wind.form.speed, 10, 75);
-    ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, 100);
+    ctx.fillText("T°: " + buildTemperature(weather.temperature), 10, weatherDetailsYOrigin + 25);
+    ctx.fillText("Night: " + buildTemperature(weather.temperatureNight), 10, weatherDetailsYOrigin + 50);
+    ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speed), 10, weatherDetailsYOrigin + 75);
+    ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, weatherDetailsYOrigin + 100);
 
     document.getElementById('canvas-thumbnail').src = canvas.toDataURL();
     $('#canvas-thumbnail').tooltip();
@@ -33,8 +44,7 @@ var buildTile = function buildTile(p) {
         if ($(window).width() > 576) {
             var $target = $(e.target);
             $target.parents('section').find('.selected-weather-effects').html($target.data('original-title'));
-        }
-        else {
+        } else {
             $('#modal').modal('show', $(this));
         }
     });
@@ -57,13 +67,11 @@ var readValues = function readValues() {
 
     console.info(result);
 
-    drawCanvas(result);
+    drawCanvas(result, $('#selected-date').text());
 
-    $('#result-temperature-f').text(result.temperature);
-    $('#result-temperature-c').text(result.temperature.convertToCelsius());
-    $('#result-night-f').text(result.temperatureNight);
-    $('#result-night-c').text(result.temperatureNight.convertToCelsius());
-    $('#result-wind').text(result.wind.form.speed);
+    $('#result-temperature').text(buildTemperature(result.temperature));
+    $('#result-night').text(buildTemperature(result.temperatureNight));
+    $('#result-wind').text(buildSpeed(result.wind.form.speed));
     $('#result-wind-direction').attr('class', 'wi wi-wind wi-towards-' + result.wind.direction);
     $('#result-clouds').text(result.cloud.form.name);
 
@@ -232,3 +240,24 @@ var readValues = function readValues() {
         }));
     }
 };
+
+var metricSystem = (navigator.language || navigator.userLanguage) !== 'en-US';
+
+var buildTemperature = function buildTemperature(temperature) {
+    if (metricSystem) {
+        return temperature.convertToCelsius() + "°C";
+    } else {
+        return temperature + "°F";
+    }
+}
+
+var buildSpeed = function buildSpeed(speed) {
+    if (typeof (speed) === 'string')
+        return speed;
+
+    if (metricSystem) {
+        return speed.convertToKilometers() + "km/h";
+    } else {
+        return speed + "mph";
+    }
+}

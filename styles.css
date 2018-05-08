@@ -28,8 +28,6 @@ canvas {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  height: 20px;
-  width: 20px;
   transition: 200ms;
   transition-timing-function: ease-in-out;
   -webkit-transition: 200ms;
@@ -48,15 +46,22 @@ canvas {
 #canvas-thumbnail[src=""] + #canvas-thumbnail-picto {
   display: none;
 }
+.picto-list {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+.picto-list h2 {
+  margin-left: 10px;
+}
 .picto-list .wi {
-  font-size: 45px;
-  height: 80px;
-  width: 80px;
-  line-height: 80px;
+  font-size: 30px;
+  height: 60px;
+  width: 60px;
+  line-height: 60px;
+  margin: 10px;
   text-align: center;
   background-color: red;
   color: white;
-  margin: 20px;
   position: relative;
 }
 .picto-list .wi.light {
@@ -104,8 +109,29 @@ ul.wind-effects {
   background-color: beige;
   border-style: none;
 }
+.ui-datepicker-trigger {
+  background: none;
+  border: none;
+}
+#ui-datepicker-div {
+  background: beige;
+}
 @media (min-width: 576px) {
   .selected-weather-effects {
     display: block;
+  }
+  .picto-list {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .picto-list h2 {
+    margin-left: 20px;
+  }
+  .picto-list .wi {
+    font-size: 45px;
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    margin: 20px;
   }
 }

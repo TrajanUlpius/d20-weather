@@ -2,6 +2,10 @@ Number.prototype.convertToCelsius = function convertToCelsius() {
   return Math.round((this - 32) / 1.8);
 };
 
+Number.prototype.convertToKilometers = function convertToKilometers() {
+  return this * 1.60934;
+};
+
 Number.prototype.toAmPmString = function toAmPmString() {
   var hour;
   if (this === 0 || this === 12) {
@@ -12,6 +16,35 @@ Number.prototype.toAmPmString = function toAmPmString() {
 
   return hour + (this >= 12 ? " pm" : " am");
 };
+
+Date.prototype.getSeason = function getSeason() {
+  switch (this.getMonth()) {
+    case 0: // january
+      return 'winter';
+    case 1:
+      return 'winter';
+    case 2:
+      return this.getDate() >= 22 ? 'spring' : 'winter';
+    case 3:
+      return 'spring';
+    case 4:
+      return 'spring';
+    case 5:
+      return this.getDate() >= 22 ? 'summer' : 'spring';
+    case 6:
+      return 'summer';
+    case 7:
+      return 'summer';
+    case 8:
+      return this.getDate() >= 22 ? 'fall' : 'summer';
+    case 9:
+      return 'fall';
+    case 10:
+      return 'fall';
+    case 11:
+      return this.getDate() >= 22 ? 'winter' : 'fall';
+  }
+}
 
 var throwDie = function throwDie(nbFaces) {
   return 1 + Math.floor(Math.random() * nbFaces);

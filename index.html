@@ -12,6 +12,8 @@
     crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons-wind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
 
   <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
@@ -58,21 +60,23 @@
           <option value="summer">summer</option>
           <option value="fall">fall</option>
         </select>
+        <input type="hidden" id="calendar" />
+
+        <br/>
         <button onclick="readValues()">GO</button>
       </section>
     </div>
     <div class="col-sm-6 col-md-4 col-lg-3">
       <section id="output">
         <h1>Outlining:</h1>
+        <h4 id="selected-date"></h4>
         <article>
           <label>Temperature:</label>
-          <span id="result-temperature-f"></span>°F /
-          <span id="result-temperature-c"></span>°C
+          <span id="result-temperature"></span>
         </article>
         <article>
           <label>At night:</label>
-          <span id="result-night-f"></span>°F /
-          <span id="result-night-c"></span>°C
+          <span id="result-night"></span>
         </article>
         <article>
           <label>Wind:</label>
@@ -152,12 +156,15 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+    crossorigin="anonymous"></script>
+  <script src="i18n/datepicker-go.js"></script>
   <script>
     var $listTiles = Object.keys(precipitationForms).map(key => buildTile({
       form: precipitationForms[key]
@@ -173,6 +180,23 @@
 
     $('#select-elevation').tooltip({
       title: '<ul style="text-align:left; list-style:none;padding-left:0"><li>sea level: 0-1000 ft</li><li>lowland: 1000-5000 ft</li><li>highland: 5000-15000 ft</li><li>high peak: 15000+ ft</li>'
+    });
+
+    $("#calendar").datepicker({
+      showOn: 'button',
+      buttonText: '<i class="far fa-calendar-alt"></i>',
+      defaultDate: '+2700y',
+      dateFormat: 'DD d MM yy',
+      onSelect: function (selectedDate, calendar) {
+        $('#selected-date').text(selectedDate);
+
+        var date = new Date(calendar.selectedYear, calendar.selectedMonth, parseInt(calendar.selectedDay));
+        var season = date.getSeason();
+        $('#select-season').val(season).change();
+        var canvas = document.getElementById('canvas');
+        canvas.width = 190;
+        canvas.height = 150;
+      }
     });
   </script>
 </body>
