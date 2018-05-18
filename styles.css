@@ -2,7 +2,8 @@ body {
   font-family: 'Alegreya', serif;
   background-image: url('parchment-texture.png');
   background-color: beige;
-  padding: 50px;
+  padding: 25px;
+  min-width: 280px;
 }
 section {
   border: solid 2px brown;
@@ -28,6 +29,8 @@ canvas {
   position: absolute;
   bottom: 10px;
   right: 10px;
+  height: 20px;
+  width: 20px;
   transition: 200ms;
   transition-timing-function: ease-in-out;
   -webkit-transition: 200ms;
@@ -117,6 +120,9 @@ ul.wind-effects {
   background: beige;
 }
 @media (min-width: 576px) {
+  body {
+    padding: 50px;
+  }
   .selected-weather-effects {
     display: block;
   }

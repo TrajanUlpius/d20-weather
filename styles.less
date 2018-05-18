@@ -2,7 +2,8 @@ body {
     font-family: 'Alegreya', serif;
     background-image: url('parchment-texture.png');
     background-color: beige;
-    padding: 50px;
+    padding: 25px;
+    min-width: 280px;
 }
 
 section {
@@ -59,11 +60,9 @@ canvas {
 .picto-list {
     margin-left: -10px;
     margin-right: -10px;
-
-h2 {
-    margin-left: 10px;
-}
-
+    h2 {
+        margin-left: 10px;
+    }
     .wi {
         font-size: 30px;
         height: 60px;
@@ -143,17 +142,18 @@ ul.wind-effects {
 }
 
 @media (min-width: 576px) {
+    body {
+        padding: 50px;
+    }
     .selected-weather-effects {
         display: block;
     }
-
     .picto-list {
         margin-left: -20px;
         margin-right: -20px;
- 
-h2 {
-    margin-left: 20px;
-}   
+        h2 {
+            margin-left: 20px;
+        }
         .wi {
             font-size: 45px;
             height: 80px;

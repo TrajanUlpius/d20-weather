@@ -168,12 +168,12 @@
   <script>
     var $listTiles = Object.keys(precipitationForms).map(key => buildTile({
       form: precipitationForms[key]
-    }).tooltip());
+    }));
     $('#list-effects').append($listTiles);
 
     $('#modal').on('show.bs.modal', function (event) {
       // Extract info from data-* attributes
-      var text = event.relatedTarget.data('original-title');
+      var text = event.relatedTarget.data('uiTooltipTitle');
       // set modal content
       $(this).find('.modal-body').html(text);
     });

@@ -25,7 +25,7 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     $('#canvas-thumbnail').tooltip();
 };
 
-var buildTile = function buildTile(p) {
+var buildTile = function buildTile(p, tooltipOptions) {
 
     var $time;
     if (p.hasOwnProperty('start') && p.hasOwnProperty('duration')) {
@@ -35,19 +35,24 @@ var buildTile = function buildTile(p) {
         });
     }
 
+    tooltipOptions = $.extend({trigger: 'hover'}, tooltipOptions);
+
     return $('<div>', {
-        class: 'wi ' + p.form.class,
-        'data-toggle': 'tooltip',
-        title: p.form.text,
-        'data-precipitation': p.form.name
-    }).append($time).on('click', function (e) {
-        if ($(window).width() > 576) {
-            var $target = $(e.target);
-            $target.parents('section').find('.selected-weather-effects').html($target.data('original-title'));
-        } else {
-            $('#modal').modal('show', $(this));
-        }
-    });
+            class: 'wi ' + p.form.class,
+            'data-toggle': 'tooltip',
+            title: p.form.text,
+            'data-precipitation': p.form.name
+        })
+        .append($time)
+        .on('click', function (e) {
+            if ($(window).width() > 576) {
+                var $target = $(e.target);
+                $target.parents('section').find('.selected-weather-effects').html($target.data('uiTooltipTitle'));
+            } else {
+                $('#modal').modal('show', $(this));
+            }
+        })
+        .tooltip(tooltipOptions);
 };
 
 var readValues = function readValues() {
@@ -80,7 +85,7 @@ var readValues = function readValues() {
     // checkif precipitation has in-game effects
     if (result.hasOwnProperty('precipitation')) {
 
-        var $tiles = result.precipitation.map(p => buildTile(p).tooltip());
+        var $tiles = result.precipitation.map(p => buildTile(p));
 
         if ($tiles.filter($t => $t.data('precipitation').indexOf('fog') > 0).length > 0) {
             $('#weather-effects').prepend($('<header>', {
@@ -105,7 +110,7 @@ var readValues = function readValues() {
                         class: 'wi-snowflake-cold heavy',
                         text: coldTemperatureTexts.extremeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature <= 0) {
 
             displayColdWarning = true;
@@ -116,7 +121,7 @@ var readValues = function readValues() {
                         class: 'wi-snowflake-cold medium',
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature <= 40) {
 
             displayColdWarning = true;
@@ -127,7 +132,7 @@ var readValues = function readValues() {
                         class: 'wi-snowflake-cold light',
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 90) {
 
             displayHeatWarning = true;
@@ -138,7 +143,7 @@ var readValues = function readValues() {
                         class: 'wi-hot light',
                         text: hotTemperatureTexts.veryHot
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 110) {
 
             displayHeatWarning = true;
@@ -149,7 +154,7 @@ var readValues = function readValues() {
                         class: 'wi-hot medium',
                         text: hotTemperatureTexts.severeHot
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 140) {
 
             displayHeatWarning = true;
@@ -160,7 +165,7 @@ var readValues = function readValues() {
                         class: 'wi-hot heavy',
                         text: hotTemperatureTexts.extremeHot
                     }
-                }).tooltip());
+                }));
         }
     }
 
@@ -176,7 +181,7 @@ var readValues = function readValues() {
                         class: 'wi-night-clear heavy',
                         text: coldTemperatureTexts.extremeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperatureNight <= 0 && result.temperature > 0) {
             $('#weather-effects')
                 .append(buildTile({
@@ -184,7 +189,7 @@ var readValues = function readValues() {
                         class: 'wi-night-clear medium',
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperatureNight <= 40 && result.temperature > 40) {
             $('#weather-effects')
                 .append(buildTile({
@@ -192,7 +197,7 @@ var readValues = function readValues() {
                         class: 'wi-night-clear light',
                         text: coldTemperatureTexts.veryCold
                     }
-                }).tooltip());
+                }));
         }
     }
 
@@ -227,7 +232,7 @@ var readValues = function readValues() {
                     class: 'wi-wind-beaufort-' + result.wind.form.beaufortScale,
                     text: beaufortTooltip
                 }
-            }).tooltip({
+            }, {
                 html: true,
                 title: beaufortTooltip
             }));
