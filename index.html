@@ -2,30 +2,44 @@
 <html lang="en">
 
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119553410-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-119553410-2');
+  </script>
+
   <title>d20 Weather Generator</title>
-  <!-- Required meta tags -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons-wind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
 
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link id="bsdp-css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css"
+    rel="stylesheet">
+  <!-- <script src="bootstrap-datepicker/js/locales/bootstrap-datepicker.ar.min.js" charset="UTF-8"></script> -->
+
   <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
 
   <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/styles.css">
 
-  <script src="weather.js"></script>
-  <script src="weather-items.js"></script>
-  <script src="ogl-data.js"></script>
-  <script src="pfwg.js"></script>
-  <script src="handle-ui.js"></script>
+  <script src="scripts/weather.js"></script>
+  <script src="scripts/weather-items.js"></script>
+  <script src="scripts/ogl-data.js"></script>
+  <script src="scripts/pfwg.js"></script>
+  <script src="scripts/handle-ui.js"></script>
   <script>
     var tooltipOptions = {};
   </script>
@@ -60,7 +74,10 @@
           <option value="summer">summer</option>
           <option value="fall">fall</option>
         </select>
-        <input type="hidden" id="calendar" />
+
+        <div id="btn-calendar" class="input-group date">
+          <input type="hidden" class="form-control"><span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
+        </div>
 
         <br/>
         <button onclick="readValues()">GO</button>
@@ -153,7 +170,6 @@
     </div>
   </div>
 
-
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -162,9 +178,8 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-    crossorigin="anonymous"></script>
-  <script src="i18n/datepicker-go.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="i18n/bootstrap-datepicker.go.js" charset="UTF-8"></script>
   <script>
     var $listTiles = Object.keys(precipitationForms).map(key => buildTile({
       form: precipitationForms[key]
@@ -182,21 +197,18 @@
       title: '<ul style="text-align:left; list-style:none;padding-left:0"><li>sea level: 0-1000 ft</li><li>lowland: 1000-5000 ft</li><li>highland: 5000-15000 ft</li><li>high peak: 15000+ ft</li>'
     });
 
-    $("#calendar").datepicker({
-      showOn: 'button',
-      buttonText: '<i class="far fa-calendar-alt"></i>',
-      defaultDate: '+2700y',
-      dateFormat: 'DD d MM yy',
-      onSelect: function (selectedDate, calendar) {
-        $('#selected-date').text(selectedDate);
-
-        var date = new Date(calendar.selectedYear, calendar.selectedMonth, parseInt(calendar.selectedDay));
-        var season = date.getSeason();
-        $('#select-season').val(season).change();
-        var canvas = document.getElementById('canvas');
-        canvas.width = 190;
-        canvas.height = 150;
-      }
+    $("#btn-calendar").datepicker({
+      autoclose: true,
+      defaultViewDate: '+2700y',
+      format: 'DD d MM yyyy',
+      language: 'go',
+      orientation: 'auto left'
+    }).on('changeDate', function (e) {
+      var season = e.date.getSeason();
+      $('#select-season').val(season).change();
+      var canvas = document.getElementById('canvas');
+      canvas.width = 190;
+      canvas.height = 150;
     });
   </script>
 </body>

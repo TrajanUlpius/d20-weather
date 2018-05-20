@@ -28,6 +28,8 @@ canvas {
   position: absolute;
   bottom: 10px;
   right: 10px;
+  height: 20px;
+  width: 20px;
   transition: 200ms;
   transition-timing-function: ease-in-out;
   -webkit-transition: 200ms;
@@ -109,12 +111,25 @@ ul.wind-effects {
   background-color: beige;
   border-style: none;
 }
-.ui-datepicker-trigger {
-  background: none;
-  border: none;
+.datepicker.datepicker-dropdown {
+  background-image: url('parchment-texture.png');
+  background-color: beige;
 }
-#ui-datepicker-div {
-  background: beige;
+.datepicker.datepicker-dropdown table thead {
+  background-color: brown;
+}
+.datepicker.datepicker-dropdown table thead th {
+  color: white;
+}
+.datepicker.datepicker-dropdown table thead th:hover:not(.dow) {
+  background-color: #6d1919;
+}
+.datepicker.datepicker-dropdown table .day:hover {
+  background-color: brown;
+  color: white;
+}
+#btn-calendar {
+  display: inline;
 }
 @media (min-width: 576px) {
   .selected-weather-effects {
