@@ -8,7 +8,7 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.fillStyle = "rgb(33, 37, 41)";
 
     var weatherDetailsYOrigin = 0;
-    if (typeof (selectedDate) !== undefined) {
+    if (typeof (selectedDate) === 'string' && selectedDate.length > 0) {
         // write date
         ctx.font = "18px Alegreya";
         ctx.fillText(selectedDate, 10, 25);
@@ -67,7 +67,7 @@ var readValues = function readValues() {
 
     console.info(result);
 
-    drawCanvas(result, $('#calendar').text());
+    drawCanvas(result, $('#selected-date').text());
 
     $('#result-temperature').text(buildTemperature(result.temperature));
     $('#result-night').text(buildTemperature(result.temperatureNight));

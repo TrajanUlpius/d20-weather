@@ -26,7 +26,6 @@
 
   <link id="bsdp-css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css"
     rel="stylesheet">
-  <!-- <script src="bootstrap-datepicker/js/locales/bootstrap-datepicker.ar.min.js" charset="UTF-8"></script> -->
 
   <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
 
@@ -40,9 +39,6 @@
   <script src="scripts/ogl-data.js"></script>
   <script src="scripts/pfwg.js"></script>
   <script src="scripts/handle-ui.js"></script>
-  <script>
-    var tooltipOptions = {};
-  </script>
 </head>
 
 <body>
@@ -195,6 +191,10 @@
 
     $('#select-elevation').tooltip({
       title: '<ul style="text-align:left; list-style:none;padding-left:0"><li>sea level: 0-1000 ft</li><li>lowland: 1000-5000 ft</li><li>highland: 5000-15000 ft</li><li>high peak: 15000+ ft</li>'
+    });
+
+    $('#btn-calendar input').on('change', function (e) {
+      $('#selected-date').text(e.target.value);
     });
 
     $("#btn-calendar").datepicker({
