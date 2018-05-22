@@ -25,8 +25,7 @@ var climate = {
     },
     precipitationFrequencyAdjustment: -1,
     precipitationIntensityAdjustment: -1,
-    temperatureVariations: [
-      {
+    temperatureVariations: [{
         probability: 20,
         variation: "-3d10",
         duration: "1d4"
@@ -70,8 +69,7 @@ var climate = {
       summer: 80,
       fall: 60
     },
-    temperatureVariations: [
-      {
+    temperatureVariations: [{
         probability: 5,
         variation: "-3d10",
         duration: "1d2"
@@ -117,8 +115,7 @@ var climate = {
     },
     precipitationFrequencyAdjustment: 1,
     precipitationIntensityAdjustment: 1,
-    temperatureVariations: [
-      {
+    temperatureVariations: [{
         probability: 10,
         variation: "-2d10",
         duration: "1d2"
@@ -299,8 +296,7 @@ var precipitationForms = {
  */
 var precipitationTable = {
   light: {
-    unfrozen: [
-      {
+    unfrozen: [{
         probability: 20,
         name: "lightFog",
         duration: "1d8"
@@ -332,8 +328,7 @@ var precipitationTable = {
         duration: 1
       }
     ],
-    frozen: [
-      {
+    frozen: [{
         probability: 20,
         name: "lightFog",
         duration: "1d6"
@@ -366,8 +361,7 @@ var precipitationTable = {
     ]
   },
   medium: {
-    unfrozen: [
-      {
+    unfrozen: [{
         probability: 10,
         name: "mediumFog",
         duration: "1d8"
@@ -404,8 +398,7 @@ var precipitationTable = {
         duration: "1d4"
       }
     ],
-    frozen: [
-      {
+    frozen: [{
         probability: 10,
         name: "mediumFog",
         duration: "1d6"
@@ -438,8 +431,7 @@ var precipitationTable = {
     ]
   },
   heavy: {
-    unfrozen: [
-      {
+    unfrozen: [{
         probability: 10,
         name: "heavyFog",
         duration: "1d8"
@@ -476,8 +468,7 @@ var precipitationTable = {
         duration: "1d3"
       }
     ],
-    frozen: [
-      {
+    frozen: [{
         probability: 10,
         name: "mediumFog",
         duration: "1d8"
@@ -505,8 +496,7 @@ var precipitationTable = {
     ]
   },
   torrential: {
-    unfrozen: [
-      {
+    unfrozen: [{
         probability: 5,
         name: "heavyFog",
         duration: "1d8"
@@ -543,8 +533,7 @@ var precipitationTable = {
         duration: "1d6"
       }
     ],
-    frozen: [
-      {
+    frozen: [{
         probability: 5,
         name: "heavyFog",
         duration: "1d8"
@@ -574,8 +563,7 @@ var precipitationTable = {
 };
 
 // Table 4–27: Thunderstorm Winds
-var thunderstormWindsTable = [
-  {
+var thunderstormWindsTable = [{
     probability: 50,
     name: "strong"
   },
@@ -590,11 +578,11 @@ var thunderstormWindsTable = [
 ];
 
 // Table 4–28: Wind Strength
-var windspeedTable = [
-  {
+var windspeedTable = [{
     probability: 50,
     name: "light",
-    speed: "0-10 mph",
+    speedMin: 0,
+    speedMax: 10,
     penaltyRanged: 0,
     penaltySiege: 0,
     penaltySkill: 0,
@@ -605,7 +593,8 @@ var windspeedTable = [
   {
     probability: 80,
     name: "moderate",
-    speed: "11-20 mph",
+    speedMin: 11,
+    speedMax: 20,
     penaltyRanged: 0,
     penaltySiege: 0,
     penaltySkill: 0,
@@ -616,7 +605,8 @@ var windspeedTable = [
   {
     probability: 90,
     name: "strong",
-    speed: "21-30 mph",
+    speedMin: 21,
+    speedMax: 30,
     penaltyRanged: -2,
     penaltySiege: 0,
     penaltySkill: -2,
@@ -627,7 +617,8 @@ var windspeedTable = [
   {
     probability: 95,
     name: "severe",
-    speed: "31-50 mph",
+    speedMin: 31,
+    speedMax: 50,
     penaltyRanged: -4,
     penaltySiege: 0,
     penaltySkill: -4,
@@ -638,7 +629,7 @@ var windspeedTable = [
   {
     probability: 100,
     name: "windstorm",
-    speed: "51+ mph",
+    speedMin: 51,
     penaltyRanged: "Impossible",
     penaltySiege: -4,
     penaltySkill: -8,
@@ -649,8 +640,7 @@ var windspeedTable = [
 ];
 
 // Table 4–29: Cloud Cover
-var cloudCoverTable = [
-  {
+var cloudCoverTable = [{
     probability: 50,
     name: "None"
   },

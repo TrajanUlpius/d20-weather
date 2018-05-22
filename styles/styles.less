@@ -12,8 +12,17 @@ section {
     padding: 20px;
     margin-bottom: 50px;
     position: relative;
+    min-height: 80px;
     h1 {
         font-size: 1.7em;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+        &.no-margin {
+            margin-bottom: 0;
+        }
     }
 }
 
@@ -57,11 +66,11 @@ canvas {
     display: none;
 }
 
-.picto-list {
-    margin-left: -10px;
-    margin-right: -10px;
-    h2 {
-        margin-left: 10px;
+.picto-list:not(:empty) {
+    margin: auto -10px -10px -10px;
+    h2,
+    header {
+        margin: 10px;
     }
     .wi {
         font-size: 30px;
@@ -80,12 +89,16 @@ canvas {
             background-color: chocolate;
         }
         .precipitation-time {
-            color: black;
+            color: white;
             position: absolute;
-            left: 0;
-            bottom: -50px;
+            left: -10px;
+            bottom: -10px;
             font-size: 16px;
             white-space: nowrap;
+            background-color: rgba(109, 25, 25, 0.5);
+            border-radius: 40px;
+            padding: 0 10px;
+            line-height: 1.5em;
         }
     }
 }
@@ -98,10 +111,6 @@ ul.wind-effects {
     padding-left: 0;
     list-style: none;
     text-align: left;
-}
-
-.hidden {
-    display: none;
 }
 
 .tooltip-inner {
@@ -132,13 +141,29 @@ ul.wind-effects {
     border-style: none;
 }
 
-.ui-datepicker-trigger {
-    background: none;
-    border: none;
+.datepicker.datepicker-dropdown {
+    background-image: url('parchment-texture.png');
+    background-color: beige;
+    table {
+        thead {
+            background-color: brown;
+            display: table-caption;
+            th {
+                color: white;
+                &:hover:not(.dow) {
+                    background-color: rgb(109, 25, 25);
+                }
+            }
+        }
+        .day:hover {
+            background-color: brown;
+            color: white;
+        }
+    }
 }
 
-#ui-datepicker-div {
-    background: beige;
+#btn-calendar {
+    display: inline;
 }
 
 @media (min-width: 576px) {
@@ -148,11 +173,11 @@ ul.wind-effects {
     .selected-weather-effects {
         display: block;
     }
-    .picto-list {
-        margin-left: -20px;
-        margin-right: -20px;
-        h2 {
-            margin-left: 20px;
+    .picto-list:not(:empty) {
+        margin: auto -20px -20px -20px;
+        h2,
+        header {
+            margin: 20px;
         }
         .wi {
             font-size: 45px;

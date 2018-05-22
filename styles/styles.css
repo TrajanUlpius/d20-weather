@@ -11,9 +11,16 @@ section {
   padding: 20px;
   margin-bottom: 50px;
   position: relative;
+  min-height: 80px;
 }
 section h1 {
   font-size: 1.7em;
+}
+section h1.no-margin,
+section h2.no-margin,
+section h3.no-margin,
+section h4.no-margin {
+  margin-bottom: 0;
 }
 .selected-weather-effects {
   display: none;
@@ -49,14 +56,14 @@ canvas {
 #canvas-thumbnail[src=""] + #canvas-thumbnail-picto {
   display: none;
 }
-.picto-list {
-  margin-left: -10px;
-  margin-right: -10px;
+.picto-list:not(:empty) {
+  margin: auto -10px -10px -10px;
 }
-.picto-list h2 {
-  margin-left: 10px;
+.picto-list:not(:empty) h2,
+.picto-list:not(:empty) header {
+  margin: 10px;
 }
-.picto-list .wi {
+.picto-list:not(:empty) .wi {
   font-size: 30px;
   height: 60px;
   width: 60px;
@@ -67,19 +74,23 @@ canvas {
   color: white;
   position: relative;
 }
-.picto-list .wi.light {
+.picto-list:not(:empty) .wi.light {
   background-color: yellowgreen;
 }
-.picto-list .wi.medium {
+.picto-list:not(:empty) .wi.medium {
   background-color: chocolate;
 }
-.picto-list .wi .precipitation-time {
-  color: black;
+.picto-list:not(:empty) .wi .precipitation-time {
+  color: white;
   position: absolute;
-  left: 0;
-  bottom: -50px;
+  left: -10px;
+  bottom: -10px;
   font-size: 16px;
   white-space: nowrap;
+  background-color: rgba(109, 25, 25, 0.5);
+  border-radius: 40px;
+  padding: 0 10px;
+  line-height: 1.5em;
 }
 .fa-eye {
   cursor: pointer;
@@ -88,9 +99,6 @@ ul.wind-effects {
   padding-left: 0;
   list-style: none;
   text-align: left;
-}
-.hidden {
-  display: none;
 }
 .tooltip-inner {
   font-family: 'Alegreya', serif;
@@ -112,12 +120,26 @@ ul.wind-effects {
   background-color: beige;
   border-style: none;
 }
-.ui-datepicker-trigger {
-  background: none;
-  border: none;
+.datepicker.datepicker-dropdown {
+  background-image: url('parchment-texture.png');
+  background-color: beige;
 }
-#ui-datepicker-div {
-  background: beige;
+.datepicker.datepicker-dropdown table thead {
+  background-color: brown;
+  display: table-caption;
+}
+.datepicker.datepicker-dropdown table thead th {
+  color: white;
+}
+.datepicker.datepicker-dropdown table thead th:hover:not(.dow) {
+  background-color: #6d1919;
+}
+.datepicker.datepicker-dropdown table .day:hover {
+  background-color: brown;
+  color: white;
+}
+#btn-calendar {
+  display: inline;
 }
 @media (min-width: 576px) {
   body {
@@ -126,14 +148,14 @@ ul.wind-effects {
   .selected-weather-effects {
     display: block;
   }
-  .picto-list {
-    margin-left: -20px;
-    margin-right: -20px;
+  .picto-list:not(:empty) {
+    margin: auto -20px -20px -20px;
   }
-  .picto-list h2 {
-    margin-left: 20px;
+  .picto-list:not(:empty) h2,
+  .picto-list:not(:empty) header {
+    margin: 20px;
   }
-  .picto-list .wi {
+  .picto-list:not(:empty) .wi {
     font-size: 45px;
     height: 80px;
     width: 80px;
