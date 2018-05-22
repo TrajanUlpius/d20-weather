@@ -1,3 +1,5 @@
+var metricSystem = (navigator.language || navigator.userLanguage) !== 'en-US';
+
 var drawCanvas = function drawCanvas(weather, selectedDate) {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext("2d");
@@ -18,7 +20,7 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.font = "16px Alegreya";
     ctx.fillText("T°: " + buildTemperature(weather.temperature), 10, weatherDetailsYOrigin + 25);
     ctx.fillText("Night: " + buildTemperature(weather.temperatureNight), 10, weatherDetailsYOrigin + 50);
-    ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speed), 10, weatherDetailsYOrigin + 75);
+    ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speedMin, weather.wind.form.speedMax), 10, weatherDetailsYOrigin + 75);
     ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, weatherDetailsYOrigin + 100);
 
     document.getElementById('canvas-thumbnail').src = canvas.toDataURL();
@@ -71,7 +73,7 @@ var readValues = function readValues() {
 
     $('#result-temperature').text(buildTemperature(result.temperature));
     $('#result-night').text(buildTemperature(result.temperatureNight));
-    $('#result-wind').text(buildSpeed(result.wind.form.speed));
+    $('#result-wind').text(buildSpeed(result.wind.form.speedMin, result.wind.form.speedMax));
     $('#result-wind-direction').attr('class', 'wi wi-wind wi-towards-' + result.wind.direction);
     $('#result-clouds').text(result.cloud.form.name);
 
@@ -241,8 +243,6 @@ var readValues = function readValues() {
     }
 };
 
-var metricSystem = (navigator.language || navigator.userLanguage) !== 'en-US';
-
 var buildTemperature = function buildTemperature(temperature) {
     if (metricSystem) {
         return temperature.convertToCelsius() + "°C";
@@ -251,13 +251,13 @@ var buildTemperature = function buildTemperature(temperature) {
     }
 }
 
-var buildSpeed = function buildSpeed(speed) {
-    if (typeof (speed) === 'string')
-        return speed;
+var buildSpeed = function buildSpeed(speedMin, speedMax) {
+    if (typeof (speedMin) === 'string')
+        return speedMin;
 
     if (metricSystem) {
-        return speed.convertToKilometers() + "km/h";
+        return speedMin.convertToKilometers() + (typeof (speedMax) === "undefined" ? "+" : ("-" + speedMax.convertToKilometers())) + " km/h";
     } else {
-        return speed + "mph";
+        return speed + " mph";
     }
 }

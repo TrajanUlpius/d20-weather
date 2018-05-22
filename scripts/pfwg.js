@@ -3,7 +3,7 @@ Number.prototype.convertToCelsius = function convertToCelsius() {
 };
 
 Number.prototype.convertToKilometers = function convertToKilometers() {
-  return this * 1.60934;
+  return Math.floor(this * 1.5); // should be 1.60934 but d20 translators decided to rond down to 1.5
 };
 
 Number.prototype.toAmPmString = function toAmPmString() {
@@ -103,10 +103,6 @@ var generateWeather = function generateWeather(input) {
   base.temperatureVariationCheck = throwDie(100);
   var temperatureVariation = climate[input.climate].temperatureVariations.filter(v => base.temperatureVariationCheck <= v.probability)[0];
   base.temperature += readDiceFormula(temperatureVariation.variation);
-  // add some variation due to cloud cover
-  if (base.cloud.form.name === "Cloudcast") {
-    base.temperature += input.season === "spring" || input.season === "summer" ? -10 : 10;
-  }
   base.temperatureNight = base.temperature + readDiceFormula("-3d6");
 
   // is there any precipitation ?
@@ -181,6 +177,11 @@ var generateWeather = function generateWeather(input) {
           });
         }
       }
+    }
+  } else {
+    // add some variation due to cloud cover without precipitation
+    if (base.cloud.form.name === "Cloudcast") {
+      base.temperature += input.season === "spring" || input.season === "summer" ? -10 : 10;
     }
   }
 
