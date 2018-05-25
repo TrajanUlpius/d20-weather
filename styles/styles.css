@@ -8,7 +8,7 @@ body {
 section {
   border: solid 2px brown;
   background-color: beige;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 50px;
   position: relative;
   min-height: 80px;
@@ -21,6 +21,9 @@ section h2.no-margin,
 section h3.no-margin,
 section h4.no-margin {
   margin-bottom: 0;
+}
+#output span {
+  font-weight: bold;
 }
 .selected-weather-effects {
   display: none;
@@ -45,22 +48,24 @@ canvas {
   width: 24px;
 }
 .picto-list:not(:empty) {
-  margin: auto -10px -10px -10px;
+  margin: auto -7.5px -7.5px -7.5px;
 }
 .picto-list:not(:empty) h2,
 .picto-list:not(:empty) header {
-  margin: 10px;
+  margin: 7.5px;
 }
 .picto-list:not(:empty) .wi {
   font-size: 30px;
   height: 60px;
   width: 60px;
   line-height: 60px;
-  margin: 10px;
+  margin: 7.5px;
   text-align: center;
   background-image: url(parchtile.png);
   background-size: cover;
   position: relative;
+  text-shadow: 0 0 0.2em white;
+  cursor: pointer;
 }
 .picto-list:not(:empty) .wi.severity-1 {
   color: #ffaa33;
@@ -146,17 +151,17 @@ ul.wind-effects {
     display: block;
   }
   .picto-list:not(:empty) {
-    margin: auto -20px -20px -20px;
+    margin: auto -15px -15px -15px;
   }
   .picto-list:not(:empty) h2,
   .picto-list:not(:empty) header {
-    margin: 20px;
+    margin: 15px;
   }
   .picto-list:not(:empty) .wi {
     font-size: 45px;
     height: 80px;
     width: 80px;
     line-height: 80px;
-    margin: 20px;
+    margin: 15px;
   }
 }

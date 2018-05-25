@@ -8,13 +8,13 @@ Number.prototype.convertToKilometers = function convertToKilometers() {
 
 Number.prototype.toAmPmString = function toAmPmString() {
   var hour;
-  if (this === 0 || this === 12) {
+  if (this % 12 === 0) {
     hour = 12;
   } else {
     hour = this % 12;
   }
 
-  return hour + (this >= 12 ? " pm" : " am");
+  return hour + (this % 24 >= 12 ? " pm" : " am");
 };
 
 Date.prototype.getSeason = function getSeason() {
