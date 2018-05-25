@@ -59,6 +59,7 @@ canvas {
   margin: 10px;
   text-align: center;
   background-image: url(parchtile.png);
+  background-size: cover;
   position: relative;
 }
 .picto-list:not(:empty) .wi.severity-1 {

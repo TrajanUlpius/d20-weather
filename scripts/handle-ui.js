@@ -43,6 +43,10 @@ var buildTile = function buildTile(p, tooltipOptions) {
         });
     }
 
+    tooltipOptions = Object.assign({
+        trigger: 'manual'
+    }, tooltipOptions);
+
     return $('<div>', {
             class: 'wi ' + p.form.class + ' severity-' + p.form.severity,
             'data-toggle': 'tooltip',
@@ -50,12 +54,24 @@ var buildTile = function buildTile(p, tooltipOptions) {
             'data-precipitation': p.form.name
         })
         .append($time)
-        .on('click', function (e) {
-            if ($(window).width() > 576) {
-                var $target = $(e.target);
-                $target.parents('section').find('.selected-weather-effects').html($target.data('uiTooltipTitle'));
-            } else {
-                $('#modal').modal('show', $(this));
+        .on({
+            click: function (e) {
+                if ($(window).width() > 576) {
+                    var $target = $(e.target);
+                    $target.parents('section').find('.selected-weather-effects').html($target.data('uiTooltipTitle') || $target.data('original-title'));
+                } else {
+                    $('#modal').modal('show', $(this));
+                }
+            },
+            mouseenter: function (e) {
+                if ($(window).width() > 576) {
+                    $(e.target).tooltip('show');
+                }
+            },
+            mouseleave: function (e) {
+                if ($(window).width() > 576) {
+                    $(e.target).tooltip('hide');
+                }
             }
         })
         .tooltip(tooltipOptions);
@@ -114,6 +130,7 @@ var readValues = function readValues() {
                 .append(buildTile({
                     form: {
                         class: 'wi-snowflake-cold heavy',
+                        severity: 4,
                         text: coldTemperatureTexts.extremeCold
                     }
                 }));
@@ -124,7 +141,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-snowflake-cold medium',
+                        class: 'wi-snowflake-cold',
+                        severity: 3,
                         text: coldTemperatureTexts.severeCold
                     }
                 }));
@@ -135,7 +153,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-snowflake-cold light',
+                        class: 'wi-snowflake-cold',
+                        severity: 2,
                         text: coldTemperatureTexts.severeCold
                     }
                 }));
@@ -146,7 +165,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot light',
+                        class: 'wi-hot',
+                        severity: 2,
                         text: hotTemperatureTexts.veryHot
                     }
                 }));
@@ -157,7 +177,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot medium',
+                        class: 'wi-hot',
+                        severity: 3,
                         text: hotTemperatureTexts.severeHot
                     }
                 }));
@@ -168,7 +189,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot heavy',
+                        class: 'wi-hot',
+                        severity: 4,
                         text: hotTemperatureTexts.extremeHot
                     }
                 }));
@@ -184,7 +206,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear heavy',
+                        class: 'wi-night-clear',
+                        severity: 4,
                         text: coldTemperatureTexts.extremeCold
                     }
                 }));
@@ -192,7 +215,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear medium',
+                        class: 'wi-night-clear',
+                        severity: 3,
                         text: coldTemperatureTexts.severeCold
                     }
                 }));
@@ -200,7 +224,8 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear light',
+                        class: 'wi-night-clear',
+                        severity: 2,
                         text: coldTemperatureTexts.veryCold
                     }
                 }));
@@ -236,6 +261,7 @@ var readValues = function readValues() {
             .append(buildTile({
                 form: {
                     class: 'wi-wind-beaufort-' + result.wind.form.beaufortScale,
+                    severity: Math.round(result.wind.form.beaufortScale * 0.44),
                     text: beaufortTooltip
                 }
             }, {
