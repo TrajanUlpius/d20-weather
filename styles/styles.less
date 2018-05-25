@@ -82,12 +82,7 @@ canvas {
         background-color: red;
         color: white;
         position: relative;
-        &.light {
-            background-color: yellowgreen;
-        }
-        &.medium {
-            background-color: chocolate;
-        }
+        .severity-loop(5);
         .precipitation-time {
             color: white;
             position: absolute;
@@ -187,4 +182,15 @@ ul.wind-effects {
             margin: 20px;
         }
     }
+}
+
+// mix-ins
+.severity-loop (@n, @i: 1) when (@i =< @n) {
+    &.severity-@{i} {
+        @red: ((@n)-(@i)) * 255 / ((@n)-1) + 255 / 2;    // m/2 -> m
+        @green: ((@n)-(@i)) * 255 / (((@n)-1)*1.5);    // 0 -> 2m/3
+        @blue: ((@n)-(@i)) * 255 / (((@n)-1)*5);       // 0 -> 5/5
+        background-color: rgb(@red, @green, @blue);
+    }
+    .severity-loop(@n, (@i+1));
 }

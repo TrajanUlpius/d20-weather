@@ -191,97 +191,116 @@ var precipitationForms = {
   lightFog: {
     name: "light fog",
     text: precipitationTexts.lightFog,
-    class: "wi-fog light"
+    class: "wi-fog",
+    severity: 1
   },
   mediumFog: {
     name: "medium fog",
     text: precipitationTexts.mediumFog,
-    class: "wi-fog medium"
+    class: "wi-fog",
+    severity: 2
   },
   heavyFog: {
     name: "heavy fog",
     text: precipitationTexts.heavyFog,
-    class: "wi-fog heavy"
+    class: "wi-fog",
+    severity: 3
   },
   drizzle: {
     name: "drizzle",
     text: precipitationTexts.drizzle,
-    class: "wi-rain light"
+    class: "wi-rain",
+    severity: 1
   },
   rain: {
     name: "rain",
     text: precipitationTexts.rain,
-    class: "wi-rain medium"
+    class: "wi-rain",
+    severity: 2
   },
   heavyRain: {
     name: "heavy rain",
     text: precipitationTexts.heavyRain,
-    class: "wi-rain heavy"
+    class: "wi-rain",
+    severity: 3
   },
   sleet: {
     name: "sleet",
     text: precipitationTexts.sleet,
-    class: "wi-sleet light"
+    class: "wi-sleet",
+    severity: 1
   },
   lightSnow: {
     name: "light snow",
     text: precipitationTexts.lightSnow,
-    class: "wi-snow light"
+    class: "wi-snow",
+    severity: 1
   },
   mediumSnow: {
     name: "medium snow",
     text: precipitationTexts.mediumSnow,
-    class: "wi-snow medium"
+    class: "wi-snow",
+    severity: 2
   },
   heavySnow: {
     name: "heavy snow",
     text: precipitationTexts.heavySnow,
-    class: "wi-snow heavy"
+    class: "wi-snow",
+    severity: 3
   },
   thunderstorm: {
     name: "thunderstorm",
     text: precipitationTexts.thunderstorm,
-    class: "wi-thunderstorm heavy"
+    class: "wi-thunderstorm",
+    severity: 4
   },
   lightning: {
     name: "lightning",
     text: precipitationTexts.lightning,
-    class: "wi-lightning heavy"
+    class: "wi-lightning",
+    severity: 4
   },
   blizzard: {
     name: "blizzard",
     text: precipitationTexts.blizzard,
-    class: "wi-snow-wind heavy"
+    class: "wi-snow-wind",
+    severity: 4
   },
   hail: {
     name: "hail",
     text: precipitationTexts.hail,
-    class: "wi-hail heavy"
+    class: "wi-hail",
+    severity: 3
   },
   hurricane: {
     name: "hurricane",
     text: precipitationTexts.hurricane,
-    class: "wi-hurricane heavy"
+    class: "wi-hurricane",
+    severity: 4
   },
   sandstorm: {
     name: "sandstorm",
     text: precipitationTexts.sandstorm,
-    class: "wi-sandstorm heavy"
+    class: "wi-sandstorm",
+    severity: 4
   },
   thundersnow: {
     name: "thundersnow",
     text: precipitationTexts.thundersnow,
-    class: "wi-day-snow-thunderstorm heavy"
+    class: "wi-day-snow-thunderstorm",
+    severity: 4
   },
   tornado: {
     name: "tornado",
     text: precipitationTexts.tornado,
-    class: "wi-tornado heavy"
+    class: "wi-tornado",
+    severity: 5
   },
   wildfire: {
     name: "wildfire",
     text: precipitationTexts.wildfire,
-    class: "wi-fire heavy"
+    class: "wi-fire",
+    severity: 4
   }
 };
 

@@ -38,7 +38,7 @@ var buildTile = function buildTile(p, tooltipOptions) {
     }
 
     return $('<div>', {
-            class: 'wi ' + p.form.class,
+            class: 'wi ' + p.form.class + ' severity-' + p.form.severity,
             'data-toggle': 'tooltip',
             title: p.form.text,
             'data-precipitation': p.form.name

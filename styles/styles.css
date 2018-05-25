@@ -74,11 +74,20 @@ canvas {
   color: white;
   position: relative;
 }
-.picto-list:not(:empty) .wi.light {
-  background-color: yellowgreen;
+.picto-list:not(:empty) .wi.severity-1 {
+  background-color: #ffaa33;
 }
-.picto-list:not(:empty) .wi.medium {
-  background-color: chocolate;
+.picto-list:not(:empty) .wi.severity-2 {
+  background-color: #ff8026;
+}
+.picto-list:not(:empty) .wi.severity-3 {
+  background-color: #ff551a;
+}
+.picto-list:not(:empty) .wi.severity-4 {
+  background-color: #bf2b0d;
+}
+.picto-list:not(:empty) .wi.severity-5 {
+  background-color: #800000;
 }
 .picto-list:not(:empty) .wi .precipitation-time {
   color: white;
