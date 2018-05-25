@@ -72,7 +72,10 @@
         </select>
 
         <div id="btn-calendar" class="input-group date">
-          <input type="hidden" class="form-control"><span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
+          <input type="hidden" class="form-control">
+          <span class="input-group-addon">
+            <i class="far fa-calendar-alt"></i>
+          </span>
         </div>
 
         <br/>
@@ -102,9 +105,9 @@
         </article>
 
         <canvas id="canvas" width="140" height="140"></canvas>
-        <img id="canvas-thumbnail" data-toggle="tooltip" title="Right-click then copy or save the image" />
-        <i id="canvas-thumbnail-picto" class="fas fa-paste"></i>
-
+        <div id="canvas-thumbnail-download" data-placement="top" data-toggle="tooltip" title="click to get a png file">
+         <i class="fas fa-download"></i>
+        </div>
       </section>
     </div>
   </div>
@@ -118,8 +121,7 @@
             <header id="altitude-effects"></header>
             <div id="weather-effects" class="picto-list"></div>
           </div>
-          <div class="col-sm-4 left-border selected-weather-effects">
-          </div>
+          <div class="col-sm-4 left-border selected-weather-effects"></div>
         </div>
       </section>
     </div>
@@ -135,8 +137,7 @@
             </h4>
             <div id="list-effects" class="picto-list collapse"></div>
           </div>
-          <div class="col-sm-4 left-border selected-weather-effects">
-          </div>
+          <div class="col-sm-4 left-border selected-weather-effects"></div>
         </div>
       </section>
     </div>

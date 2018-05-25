@@ -31,30 +31,18 @@ canvas {
 .left-border {
   border-left: solid 1px brown;
 }
-#canvas-thumbnail,
-#canvas-thumbnail-picto {
+#canvas-thumbnail-download {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  height: 20px;
-  width: 20px;
-  transition: 200ms;
-  transition-timing-function: ease-in-out;
-  -webkit-transition: 200ms;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition: 200ms;
-  -moz-transition-timing-function: ease-in-out;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
 }
-#canvas-thumbnail:hover + #canvas-thumbnail-picto,
-#canvas-thumbnail-picto:hover {
-  height: 0;
-  width: 0;
-}
-#canvas-thumbnail:not([src]),
-#canvas-thumbnail[src=""],
-#canvas-thumbnail:not([src]) + #canvas-thumbnail-picto,
-#canvas-thumbnail[src=""] + #canvas-thumbnail-picto {
-  display: none;
+#canvas-thumbnail-download svg,
+#canvas-thumbnail-download i {
+  height: 24px;
+  width: 24px;
 }
 .picto-list:not(:empty) {
   margin: auto -10px -10px -10px;
@@ -70,24 +58,23 @@ canvas {
   line-height: 60px;
   margin: 10px;
   text-align: center;
-  background-color: red;
-  color: white;
+  background-image: url(parchtile.png);
   position: relative;
 }
 .picto-list:not(:empty) .wi.severity-1 {
-  background-color: #ffaa33;
+  color: #ffaa33;
 }
 .picto-list:not(:empty) .wi.severity-2 {
-  background-color: #ff8026;
+  color: #ff8026;
 }
 .picto-list:not(:empty) .wi.severity-3 {
-  background-color: #ff551a;
+  color: #ff551a;
 }
 .picto-list:not(:empty) .wi.severity-4 {
-  background-color: #bf2b0d;
+  color: #bf2b0d;
 }
 .picto-list:not(:empty) .wi.severity-5 {
-  background-color: #800000;
+  color: #800000;
 }
 .picto-list:not(:empty) .wi .precipitation-time {
   color: white;

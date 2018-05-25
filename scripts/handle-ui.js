@@ -23,8 +23,14 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speedMin, weather.wind.form.speedMax), 10, weatherDetailsYOrigin + 75);
     ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, weatherDetailsYOrigin + 100);
 
-    document.getElementById('canvas-thumbnail').src = canvas.toDataURL();
-    $('#canvas-thumbnail').tooltip();
+    $("#canvas-thumbnail-download").show().off().on('click', function () {
+        var dataURL = canvas.toDataURL({
+            format: "png"
+        });
+        var w = window.open("about:blank", "Export");
+        w.document.write("<img src=\"" + dataURL + "\"/>");
+        w.document.close();
+    });
 };
 
 var buildTile = function buildTile(p, tooltipOptions) {

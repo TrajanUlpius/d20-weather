@@ -38,32 +38,17 @@ canvas {
     border-left: solid 1px brown;
 }
 
-#canvas-thumbnail,
-#canvas-thumbnail-picto {
+#canvas-thumbnail-download {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    height: 20px;
-    width: 20px;
-    transition: 200ms;
-    transition-timing-function: ease-in-out;
-    -webkit-transition: 200ms;
-    -webkit-transition-timing-function: ease-in-out;
-    -moz-transition: 200ms;
-    -moz-transition-timing-function: ease-in-out;
-}
-
-#canvas-thumbnail:hover+#canvas-thumbnail-picto,
-#canvas-thumbnail-picto:hover {
-    height: 0;
-    width: 0;
-}
-
-#canvas-thumbnail:not([src]),
-#canvas-thumbnail[src=""],
-#canvas-thumbnail:not([src])+#canvas-thumbnail-picto,
-#canvas-thumbnail[src=""]+#canvas-thumbnail-picto {
-    display: none;
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+    svg, i {
+        height: 24px;
+        width: 24px;
+    }
 }
 
 .picto-list:not(:empty) {
@@ -79,8 +64,7 @@ canvas {
         line-height: 60px;
         margin: 10px;
         text-align: center;
-        background-color: red;
-        color: white;
+        background-image: url(parchtile.png);
         position: relative;
         .severity-loop(5);
         .precipitation-time {
@@ -185,12 +169,14 @@ ul.wind-effects {
 }
 
 // mix-ins
-.severity-loop (@n, @i: 1) when (@i =< @n) {
+.severity-loop (@n,
+@i: 1) when (@i =< @n) {
     &.severity-@{i} {
-        @red: ((@n)-(@i)) * 255 / ((@n)-1) + 255 / 2;    // m/2 -> m
-        @green: ((@n)-(@i)) * 255 / (((@n)-1)*1.5);    // 0 -> 2m/3
-        @blue: ((@n)-(@i)) * 255 / (((@n)-1)*5);       // 0 -> 5/5
-        background-color: rgb(@red, @green, @blue);
+        @red: ((@n)-(@i)) * 255 / ((@n)-1)+255 / 2; // m/2 -> m
+        @green: ((@n)-(@i)) * 255 / (((@n)-1)*1.5); // 0 -> 2m/3
+        @blue: ((@n)-(@i)) * 255 / (((@n)-1)*5); // 0 -> 5/5
+        color: rgb(@red, @green, @blue);
     }
-    .severity-loop(@n, (@i+1));
+    .severity-loop(@n,
+    (@i+1));
 }
