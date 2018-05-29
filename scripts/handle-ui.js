@@ -293,6 +293,6 @@ var buildSpeed = function buildSpeed(speedMin, speedMax) {
     if (metricSystem) {
         return speedMin.convertToKilometers() + (typeof (speedMax) === "undefined" ? "+" : ("-" + speedMax.convertToKilometers())) + " km/h";
     } else {
-        return speed + " mph";
+        return speedMin + (typeof (speedMax) === "undefined" ? "+" : ("-" + speedMax)) + " mph";
     }
 };
