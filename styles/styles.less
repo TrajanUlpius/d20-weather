@@ -51,6 +51,7 @@ canvas {
     height: 24px;
     width: 24px;
     cursor: pointer;
+    display: none;
     svg, i {
         height: 24px;
         width: 24px;
@@ -105,6 +106,10 @@ ul.wind-effects {
     font-family: 'Alegreya', serif;
     background-color: #d6d6cb;
     color: black;
+
+    &.large-tooltip-inner{
+        max-width: 500px;
+    }
 }
 
 .bs-tooltip-top,
@@ -132,7 +137,11 @@ ul.wind-effects {
 .datepicker.datepicker-dropdown {
     background-image: url('parchment-texture.png');
     background-color: beige;
-    table {
+    & > div {
+        width: 100%;
+    }
+    table.table-condensed {
+        width: 100%;
         thead {
             background-color: brown;
             display: table-caption;
@@ -157,6 +166,8 @@ ul.wind-effects {
 @media (min-width: 576px) {
     body {
         padding: 50px;
+        // fixes a problem with tooltip
+        overflow-y: scroll;
     }
     .selected-weather-effects {
         display: block;

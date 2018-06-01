@@ -41,6 +41,7 @@ canvas {
   height: 24px;
   width: 24px;
   cursor: pointer;
+  display: none;
 }
 #canvas-thumbnail-download svg,
 #canvas-thumbnail-download i {
@@ -107,6 +108,9 @@ ul.wind-effects {
   background-color: #d6d6cb;
   color: black;
 }
+.tooltip-inner.large-tooltip-inner {
+  max-width: 500px;
+}
 .bs-tooltip-top .arrow::before,
 .bs-tooltip-bottom .arrow::before {
   border-top-color: #d6d6cb !important;
@@ -126,17 +130,23 @@ ul.wind-effects {
   background-image: url('parchment-texture.png');
   background-color: beige;
 }
-.datepicker.datepicker-dropdown table thead {
+.datepicker.datepicker-dropdown > div {
+  width: 100%;
+}
+.datepicker.datepicker-dropdown table.table-condensed {
+  width: 100%;
+}
+.datepicker.datepicker-dropdown table.table-condensed thead {
   background-color: brown;
   display: table-caption;
 }
-.datepicker.datepicker-dropdown table thead th {
+.datepicker.datepicker-dropdown table.table-condensed thead th {
   color: white;
 }
-.datepicker.datepicker-dropdown table thead th:hover:not(.dow) {
+.datepicker.datepicker-dropdown table.table-condensed thead th:hover:not(.dow) {
   background-color: #6d1919;
 }
-.datepicker.datepicker-dropdown table .day:hover {
+.datepicker.datepicker-dropdown table.table-condensed .day:hover {
   background-color: brown;
   color: white;
 }
@@ -146,6 +156,7 @@ ul.wind-effects {
 @media (min-width: 576px) {
   body {
     padding: 50px;
+    overflow-y: scroll;
   }
   .selected-weather-effects {
     display: block;

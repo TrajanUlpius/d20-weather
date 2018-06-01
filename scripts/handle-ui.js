@@ -23,19 +23,33 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speedMin, weather.wind.form.speedMax), 10, weatherDetailsYOrigin + 75);
     ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, weatherDetailsYOrigin + 100);
 
-    $("#canvas-thumbnail-download").show().off().on('click', function () {
-        var dataURL = canvas.toDataURL({
-            format: "png"
-        });
-        var w = window.open("about:blank", "Export");
-        w.document.write("<img src=\"" + dataURL + "\"/>");
-        w.document.close();
+    $("#canvas-thumbnail-download").show().tooltip('show').off().on({
+        click: function (e) {
+            var dataURL = canvas.toDataURL({
+                format: "png"
+            });
+            var w = window.open("about:blank", "Export");
+            if (w != null) {
+                w.document.write("<img src=\"" + dataURL + "\"/>");
+                w.document.close();
+            } else {
+                document.write("<img src=\"" + dataURL + "\"/>")
+            }
+        },
+        mouseleave: function (e) {
+            $(e.currentTarget).tooltip('show');
+        },
+        mouseleave: function (e) {
+            $(e.currentTarget).tooltip('hide');
+        }
     });
+
+    window.setTimeout(x => $("#canvas-thumbnail-download").tooltip('hide'), 2000);
 };
 
 var buildTile = function buildTile(p, tooltipOptions) {
 
-    var $time;
+    var $time = null;
     if (p.hasOwnProperty('start') && p.hasOwnProperty('duration')) {
         $time = $('<span>', {
             class: 'precipitation-time',
@@ -44,8 +58,13 @@ var buildTile = function buildTile(p, tooltipOptions) {
     }
 
     tooltipOptions = Object.assign({
-        trigger: 'manual'
+        trigger: 'manual',
+        container: 'body'
     }, tooltipOptions);
+
+    if (p.form.text.length > 400) {
+        tooltipOptions.template = '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner large-tooltip-inner"></div></div>';
+    }
 
     return $('<div>', {
             class: 'wi ' + p.form.class + ' severity-' + p.form.severity,
@@ -54,6 +73,7 @@ var buildTile = function buildTile(p, tooltipOptions) {
             'data-precipitation': p.form.name
         })
         .append($time)
+        .css('transform', 'rotate(' + $time == null ? 0 : (Math.random() * 5) + 'deg)')
         .on({
             click: function (e) {
                 if ($(window).width() > 576) {
@@ -91,8 +111,6 @@ var readValues = function readValues() {
     if (altitudeTexts.hasOwnProperty(input.elevation)) {
         $('#altitude-effects').html(altitudeTexts[input.elevation]);
     }
-
-    console.info(result);
 
     drawCanvas(result, $('#selected-date').text());
 

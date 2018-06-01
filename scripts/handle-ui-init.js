@@ -15,6 +15,10 @@ $('#select-elevation').tooltip({
     title: '<ul style="text-align:left; list-style:none;padding-left:0"><li>sea level: 0-1000 ft</li><li>lowland: 1000-5000 ft</li><li>highland: 5000-15000 ft</li><li>high peak: 15000+ ft</li>'
 });
 
+$('#canvas-thumbnail-download').tooltip({
+    container: 'body'
+});
+
 $('#btn-calendar input').on('change', function (e) {
     $('#selected-date').text(e.target.value);
 });
