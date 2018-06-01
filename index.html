@@ -39,9 +39,6 @@
   <script src="scripts/ogl-data.js"></script>
   <script src="scripts/pfwg.js"></script>
   <script src="scripts/handle-ui.js"></script>
-  <script>
-    var tooltipOptions = {};
-  </script>
 </head>
 
 <body>
@@ -105,26 +102,8 @@
         </article>
 
         <canvas id="canvas" width="140" height="140"></canvas>
-        <img id="canvas-thumbnail" data-toggle="tooltip" title="Right-click then copy or save the image" />
-        <i id="canvas-thumbnail-picto" class="fas fa-paste"></i>
-
-      </section>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12">
-      <section>
-        <div class="row">
-          <div class="col-sm-8">
-            <h1>In-game effects:</h1>
-            <header id="altitude-effects"></header>
-            <div id="weather-effects" class="picto-list">
-
-            </div>
-          </div>
-          <div class="col-sm-4 left-border selected-weather-effects">
-          </div>
+        <div id="canvas-thumbnail-download" data-placement="left" data-toggle="tooltip" title="click to get a png file">
+         <i class="fas fa-download"></i>
         </div>
       </section>
     </div>
@@ -135,15 +114,27 @@
       <section>
         <div class="row">
           <div class="col-sm-8">
-            <h4>Possible weather events
-              <i class="fas fa-eye" onclick="$('#list-effects').toggleClass('hidden'); $(this).toggleClass('fa-eye').toggleClass('fa-eye-slash')"></i>
-            </h4>
-            <div id="list-effects" class="picto-list hidden">
+            <h1 class="no-margin">In-game effects:</h1>
+            <header id="altitude-effects"></header>
+            <div id="weather-effects" class="picto-list"></div>
+          </div>
+          <div class="col-sm-4 left-border selected-weather-effects"></div>
+        </div>
+      </section>
+    </div>
+  </div>
 
-            </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <section>
+        <div class="row">
+          <div class="col-sm-8">
+            <h4 class="no-margin">Possible weather events
+              <i class="fas fa-caret-down" data-toggle="collapse" data-target="#list-effects" aria-expanded="false" onclick="$(this).toggleClass('fa-caret-down').toggleClass('fa-caret-square-down')"></i>
+            </h4>
+            <div id="list-effects" class="picto-list collapse"></div>
           </div>
-          <div class="col-sm-4 left-border selected-weather-effects">
-          </div>
+          <div class="col-sm-4 left-border selected-weather-effects"></div>
         </div>
       </section>
     </div>
@@ -162,9 +153,7 @@
   <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-body" data-dismiss="modal">
-
-        </div>
+        <div class="modal-body" data-dismiss="modal"></div>
       </div>
     </div>
   </div>
@@ -179,37 +168,7 @@
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
   <script src="i18n/bootstrap-datepicker.go.js" charset="UTF-8"></script>
-  <script>
-    var $listTiles = Object.keys(precipitationForms).map(key => buildTile({
-      form: precipitationForms[key]
-    }).tooltip());
-    $('#list-effects').append($listTiles);
-
-    $('#modal').on('show.bs.modal', function (event) {
-      // Extract info from data-* attributes
-      var text = event.relatedTarget.data('original-title');
-      // set modal content
-      $(this).find('.modal-body').html(text);
-    });
-
-    $('#select-elevation').tooltip({
-      title: '<ul style="text-align:left; list-style:none;padding-left:0"><li>sea level: 0-1000 ft</li><li>lowland: 1000-5000 ft</li><li>highland: 5000-15000 ft</li><li>high peak: 15000+ ft</li>'
-    });
-
-    $("#btn-calendar").datepicker({
-      autoclose: true,
-      defaultViewDate: '+2700y',
-      format: 'DD d MM yyyy',
-      language: 'go',
-      orientation: 'auto left'
-    }).on('changeDate', function (e) {
-      var season = e.date.getSeason();
-      $('#select-season').val(season).change();
-      var canvas = document.getElementById('canvas');
-      canvas.width = 190;
-      canvas.height = 150;
-    });
-  </script>
+  <script src="scripts/handle-ui-init.js"></script>
 </body>
 
 </html>

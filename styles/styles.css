@@ -2,17 +2,28 @@ body {
   font-family: 'Alegreya', serif;
   background-image: url('parchment-texture.png');
   background-color: beige;
-  padding: 50px;
+  padding: 25px;
+  min-width: 280px;
 }
 section {
   border: solid 2px brown;
   background-color: beige;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 50px;
   position: relative;
+  min-height: 80px;
 }
 section h1 {
   font-size: 1.7em;
+}
+section h1.no-margin,
+section h2.no-margin,
+section h3.no-margin,
+section h4.no-margin {
+  margin-bottom: 0;
+}
+#output span {
+  font-weight: bold;
 }
 .selected-weather-effects {
   display: none;
@@ -23,62 +34,66 @@ canvas {
 .left-border {
   border-left: solid 1px brown;
 }
-#canvas-thumbnail,
-#canvas-thumbnail-picto {
+#canvas-thumbnail-download {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  height: 20px;
-  width: 20px;
-  transition: 200ms;
-  transition-timing-function: ease-in-out;
-  -webkit-transition: 200ms;
-  -webkit-transition-timing-function: ease-in-out;
-  -moz-transition: 200ms;
-  -moz-transition-timing-function: ease-in-out;
-}
-#canvas-thumbnail:hover + #canvas-thumbnail-picto,
-#canvas-thumbnail-picto:hover {
-  height: 0;
-  width: 0;
-}
-#canvas-thumbnail:not([src]),
-#canvas-thumbnail[src=""],
-#canvas-thumbnail:not([src]) + #canvas-thumbnail-picto,
-#canvas-thumbnail[src=""] + #canvas-thumbnail-picto {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
   display: none;
 }
-.picto-list {
-  margin-left: -10px;
-  margin-right: -10px;
+#canvas-thumbnail-download svg,
+#canvas-thumbnail-download i {
+  height: 24px;
+  width: 24px;
 }
-.picto-list h2 {
-  margin-left: 10px;
+.picto-list:not(:empty) {
+  margin: auto -7.5px -7.5px -7.5px;
 }
-.picto-list .wi {
+.picto-list:not(:empty) h2,
+.picto-list:not(:empty) header {
+  margin: 7.5px;
+}
+.picto-list:not(:empty) .wi {
   font-size: 30px;
   height: 60px;
   width: 60px;
   line-height: 60px;
-  margin: 10px;
+  margin: 7.5px;
   text-align: center;
-  background-color: red;
-  color: white;
+  background-image: url(parchtile.png);
+  background-size: cover;
   position: relative;
+  text-shadow: 0 0 0.2em white;
+  cursor: pointer;
 }
-.picto-list .wi.light {
-  background-color: yellowgreen;
+.picto-list:not(:empty) .wi.severity-1 {
+  color: #ffaa33;
 }
-.picto-list .wi.medium {
-  background-color: chocolate;
+.picto-list:not(:empty) .wi.severity-2 {
+  color: #ff8026;
 }
-.picto-list .wi .precipitation-time {
-  color: black;
+.picto-list:not(:empty) .wi.severity-3 {
+  color: #ff551a;
+}
+.picto-list:not(:empty) .wi.severity-4 {
+  color: #bf2b0d;
+}
+.picto-list:not(:empty) .wi.severity-5 {
+  color: #800000;
+}
+.picto-list:not(:empty) .wi .precipitation-time {
+  color: white;
   position: absolute;
-  left: 0;
-  bottom: -50px;
+  left: -10px;
+  bottom: -10px;
   font-size: 16px;
   white-space: nowrap;
+  background-color: rgba(109, 25, 25, 0.5);
+  border-radius: 40px;
+  padding: 0 10px;
+  line-height: 1.5em;
 }
 .fa-eye {
   cursor: pointer;
@@ -88,13 +103,13 @@ ul.wind-effects {
   list-style: none;
   text-align: left;
 }
-.hidden {
-  display: none;
-}
 .tooltip-inner {
   font-family: 'Alegreya', serif;
   background-color: #d6d6cb;
   color: black;
+}
+.tooltip-inner.large-tooltip-inner {
+  max-width: 500px;
 }
 .bs-tooltip-top .arrow::before,
 .bs-tooltip-bottom .arrow::before {
@@ -115,16 +130,23 @@ ul.wind-effects {
   background-image: url('parchment-texture.png');
   background-color: beige;
 }
-.datepicker.datepicker-dropdown table thead {
-  background-color: brown;
+.datepicker.datepicker-dropdown > div {
+  width: 100%;
 }
-.datepicker.datepicker-dropdown table thead th {
+.datepicker.datepicker-dropdown table.table-condensed {
+  width: 100%;
+}
+.datepicker.datepicker-dropdown table.table-condensed thead {
+  background-color: brown;
+  display: table-caption;
+}
+.datepicker.datepicker-dropdown table.table-condensed thead th {
   color: white;
 }
-.datepicker.datepicker-dropdown table thead th:hover:not(.dow) {
+.datepicker.datepicker-dropdown table.table-condensed thead th:hover:not(.dow) {
   background-color: #6d1919;
 }
-.datepicker.datepicker-dropdown table .day:hover {
+.datepicker.datepicker-dropdown table.table-condensed .day:hover {
   background-color: brown;
   color: white;
 }
@@ -132,21 +154,25 @@ ul.wind-effects {
   display: inline;
 }
 @media (min-width: 576px) {
+  body {
+    padding: 50px;
+    overflow-y: scroll;
+  }
   .selected-weather-effects {
     display: block;
   }
-  .picto-list {
-    margin-left: -20px;
-    margin-right: -20px;
+  .picto-list:not(:empty) {
+    margin: auto -15px -15px -15px;
   }
-  .picto-list h2 {
-    margin-left: 20px;
+  .picto-list:not(:empty) h2,
+  .picto-list:not(:empty) header {
+    margin: 15px;
   }
-  .picto-list .wi {
+  .picto-list:not(:empty) .wi {
     font-size: 45px;
     height: 80px;
     width: 80px;
     line-height: 80px;
-    margin: 20px;
+    margin: 15px;
   }
 }

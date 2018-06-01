@@ -1,3 +1,5 @@
+var metricSystem = (navigator.language || navigator.userLanguage) !== 'en-US';
+
 var drawCanvas = function drawCanvas(weather, selectedDate) {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext("2d");
@@ -8,7 +10,7 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.fillStyle = "rgb(33, 37, 41)";
 
     var weatherDetailsYOrigin = 0;
-    if (typeof (selectedDate) !== undefined) {
+    if (typeof (selectedDate) === 'string' && selectedDate.length > 0) {
         // write date
         ctx.font = "18px Alegreya";
         ctx.fillText(selectedDate, 10, 25);
@@ -18,16 +20,36 @@ var drawCanvas = function drawCanvas(weather, selectedDate) {
     ctx.font = "16px Alegreya";
     ctx.fillText("T°: " + buildTemperature(weather.temperature), 10, weatherDetailsYOrigin + 25);
     ctx.fillText("Night: " + buildTemperature(weather.temperatureNight), 10, weatherDetailsYOrigin + 50);
-    ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speed), 10, weatherDetailsYOrigin + 75);
+    ctx.fillText("Wind: " + buildSpeed(weather.wind.form.speedMin, weather.wind.form.speedMax), 10, weatherDetailsYOrigin + 75);
     ctx.fillText("Clouds: " + weather.cloud.form.name.replace(/clouds$/i, '').trim(), 10, weatherDetailsYOrigin + 100);
 
-    document.getElementById('canvas-thumbnail').src = canvas.toDataURL();
-    $('#canvas-thumbnail').tooltip();
+    $("#canvas-thumbnail-download").show().tooltip('show').off().on({
+        click: function (e) {
+            var dataURL = canvas.toDataURL({
+                format: "png"
+            });
+            var w = window.open("about:blank", "Export");
+            if (w != null) {
+                w.document.write("<img src=\"" + dataURL + "\"/>");
+                w.document.close();
+            } else {
+                document.write("<img src=\"" + dataURL + "\"/>")
+            }
+        },
+        mouseleave: function (e) {
+            $(e.currentTarget).tooltip('show');
+        },
+        mouseleave: function (e) {
+            $(e.currentTarget).tooltip('hide');
+        }
+    });
+
+    window.setTimeout(x => $("#canvas-thumbnail-download").tooltip('hide'), 2000);
 };
 
-var buildTile = function buildTile(p) {
+var buildTile = function buildTile(p, tooltipOptions) {
 
-    var $time;
+    var $time = null;
     if (p.hasOwnProperty('start') && p.hasOwnProperty('duration')) {
         $time = $('<span>', {
             class: 'precipitation-time',
@@ -35,19 +57,44 @@ var buildTile = function buildTile(p) {
         });
     }
 
+    tooltipOptions = Object.assign({
+        trigger: 'manual',
+        container: 'body'
+    }, tooltipOptions);
+
+    if (p.form.text.length > 400) {
+        tooltipOptions.template = '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner large-tooltip-inner"></div></div>';
+    }
+
     return $('<div>', {
-        class: 'wi ' + p.form.class,
-        'data-toggle': 'tooltip',
-        title: p.form.text,
-        'data-precipitation': p.form.name
-    }).append($time).on('click', function (e) {
-        if ($(window).width() > 576) {
-            var $target = $(e.target);
-            $target.parents('section').find('.selected-weather-effects').html($target.data('original-title'));
-        } else {
-            $('#modal').modal('show', $(this));
-        }
-    });
+            class: 'wi ' + p.form.class + ' severity-' + p.form.severity,
+            'data-toggle': 'tooltip',
+            title: p.form.text,
+            'data-precipitation': p.form.name
+        })
+        .append($time)
+        .css('transform', 'rotate(' + $time == null ? 0 : (Math.random() * 5) + 'deg)')
+        .on({
+            click: function (e) {
+                if ($(window).width() > 576) {
+                    var $target = $(e.target);
+                    $target.parents('section').find('.selected-weather-effects').html($target.data('uiTooltipTitle') || $target.data('original-title'));
+                } else {
+                    $('#modal').modal('show', $(this));
+                }
+            },
+            mouseenter: function (e) {
+                if ($(window).width() > 576) {
+                    $(e.target).tooltip('show');
+                }
+            },
+            mouseleave: function (e) {
+                if ($(window).width() > 576) {
+                    $(e.target).tooltip('hide');
+                }
+            }
+        })
+        .tooltip(tooltipOptions);
 };
 
 var readValues = function readValues() {
@@ -65,13 +112,11 @@ var readValues = function readValues() {
         $('#altitude-effects').html(altitudeTexts[input.elevation]);
     }
 
-    console.info(result);
-
-    drawCanvas(result, $('#calendar').text());
+    drawCanvas(result, $('#selected-date').text());
 
     $('#result-temperature').text(buildTemperature(result.temperature));
     $('#result-night').text(buildTemperature(result.temperatureNight));
-    $('#result-wind').text(buildSpeed(result.wind.form.speed));
+    $('#result-wind').text(buildSpeed(result.wind.form.speedMin, result.wind.form.speedMax));
     $('#result-wind-direction').attr('class', 'wi wi-wind wi-towards-' + result.wind.direction);
     $('#result-clouds').text(result.cloud.form.name);
 
@@ -80,7 +125,7 @@ var readValues = function readValues() {
     // checkif precipitation has in-game effects
     if (result.hasOwnProperty('precipitation')) {
 
-        var $tiles = result.precipitation.map(p => buildTile(p).tooltip());
+        var $tiles = result.precipitation.map(p => buildTile(p));
 
         if ($tiles.filter($t => $t.data('precipitation').indexOf('fog') > 0).length > 0) {
             $('#weather-effects').prepend($('<header>', {
@@ -103,9 +148,10 @@ var readValues = function readValues() {
                 .append(buildTile({
                     form: {
                         class: 'wi-snowflake-cold heavy',
+                        severity: 4,
                         text: coldTemperatureTexts.extremeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature <= 0) {
 
             displayColdWarning = true;
@@ -113,10 +159,11 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-snowflake-cold medium',
+                        class: 'wi-snowflake-cold',
+                        severity: 3,
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature <= 40) {
 
             displayColdWarning = true;
@@ -124,10 +171,11 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-snowflake-cold light',
+                        class: 'wi-snowflake-cold',
+                        severity: 2,
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 90) {
 
             displayHeatWarning = true;
@@ -135,10 +183,11 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot light',
+                        class: 'wi-hot',
+                        severity: 2,
                         text: hotTemperatureTexts.veryHot
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 110) {
 
             displayHeatWarning = true;
@@ -146,10 +195,11 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot medium',
+                        class: 'wi-hot',
+                        severity: 3,
                         text: hotTemperatureTexts.severeHot
                     }
-                }).tooltip());
+                }));
         } else if (result.temperature >= 140) {
 
             displayHeatWarning = true;
@@ -157,10 +207,11 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-hot heavy',
+                        class: 'wi-hot',
+                        severity: 4,
                         text: hotTemperatureTexts.extremeHot
                     }
-                }).tooltip());
+                }));
         }
     }
 
@@ -173,26 +224,29 @@ var readValues = function readValues() {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear heavy',
+                        class: 'wi-night-clear',
+                        severity: 4,
                         text: coldTemperatureTexts.extremeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperatureNight <= 0 && result.temperature > 0) {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear medium',
+                        class: 'wi-night-clear',
+                        severity: 3,
                         text: coldTemperatureTexts.severeCold
                     }
-                }).tooltip());
+                }));
         } else if (result.temperatureNight <= 40 && result.temperature > 40) {
             $('#weather-effects')
                 .append(buildTile({
                     form: {
-                        class: 'wi-night-clear light',
+                        class: 'wi-night-clear',
+                        severity: 2,
                         text: coldTemperatureTexts.veryCold
                     }
-                }).tooltip());
+                }));
         }
     }
 
@@ -225,9 +279,10 @@ var readValues = function readValues() {
             .append(buildTile({
                 form: {
                     class: 'wi-wind-beaufort-' + result.wind.form.beaufortScale,
+                    severity: Math.round(result.wind.form.beaufortScale * 0.44),
                     text: beaufortTooltip
                 }
-            }).tooltip({
+            }, {
                 html: true,
                 title: beaufortTooltip
             }));
@@ -241,23 +296,21 @@ var readValues = function readValues() {
     }
 };
 
-var metricSystem = (navigator.language || navigator.userLanguage) !== 'en-US';
-
 var buildTemperature = function buildTemperature(temperature) {
     if (metricSystem) {
         return temperature.convertToCelsius() + "°C";
     } else {
         return temperature + "°F";
     }
-}
+};
 
-var buildSpeed = function buildSpeed(speed) {
-    if (typeof (speed) === 'string')
-        return speed;
+var buildSpeed = function buildSpeed(speedMin, speedMax) {
+    if (typeof (speedMin) === 'string')
+        return speedMin;
 
     if (metricSystem) {
-        return speed.convertToKilometers() + "km/h";
+        return speedMin.convertToKilometers() + (typeof (speedMax) === "undefined" ? "+" : ("-" + speedMax.convertToKilometers())) + " km/h";
     } else {
-        return speed + "mph";
+        return speedMin + (typeof (speedMax) === "undefined" ? "+" : ("-" + speedMax)) + " mph";
     }
-}
+};

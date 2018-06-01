@@ -1,19 +1,35 @@
+@tileMargin: 15px;
+
 body {
     font-family: 'Alegreya', serif;
     background-image: url('parchment-texture.png');
     background-color: beige;
-    padding: 50px;
+    padding: 25px;
+    min-width: 280px;
 }
 
 section {
     border: solid 2px brown;
     background-color: beige;
-    padding: 20px;
+    padding: @tileMargin;
     margin-bottom: 50px;
     position: relative;
+    min-height: 80px;
     h1 {
         font-size: 1.7em;
     }
+    h1,
+    h2,
+    h3,
+    h4 {
+        &.no-margin {
+            margin-bottom: 0;
+        }
+    }
+}
+
+#output span{
+    font-weight: bold;
 }
 
 .selected-weather-effects {
@@ -28,63 +44,50 @@ canvas {
     border-left: solid 1px brown;
 }
 
-#canvas-thumbnail,
-#canvas-thumbnail-picto {
+#canvas-thumbnail-download {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    height: 20px;
-    width: 20px;
-    transition: 200ms;
-    transition-timing-function: ease-in-out;
-    -webkit-transition: 200ms;
-    -webkit-transition-timing-function: ease-in-out;
-    -moz-transition: 200ms;
-    -moz-transition-timing-function: ease-in-out;
-}
-
-#canvas-thumbnail:hover+#canvas-thumbnail-picto,
-#canvas-thumbnail-picto:hover {
-    height: 0;
-    width: 0;
-}
-
-#canvas-thumbnail:not([src]),
-#canvas-thumbnail[src=""],
-#canvas-thumbnail:not([src])+#canvas-thumbnail-picto,
-#canvas-thumbnail[src=""]+#canvas-thumbnail-picto {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
     display: none;
+    svg, i {
+        height: 24px;
+        width: 24px;
+    }
 }
 
-.picto-list {
-    margin-left: -10px;
-    margin-right: -10px;
-    h2 {
-        margin-left: 10px;
+.picto-list:not(:empty) {
+    margin: auto -@tileMargin/2 -@tileMargin/2 -@tileMargin/2;
+    h2,
+    header {
+        margin: @tileMargin/2;
     }
     .wi {
         font-size: 30px;
         height: 60px;
         width: 60px;
         line-height: 60px;
-        margin: 10px;
+        margin: @tileMargin/2;
         text-align: center;
-        background-color: red;
-        color: white;
+        background-image: url(parchtile.png);
+        background-size: cover;
         position: relative;
-        &.light {
-            background-color: yellowgreen;
-        }
-        &.medium {
-            background-color: chocolate;
-        }
+        text-shadow: 0 0 0.2em white;
+        cursor: pointer;
+        .severity-loop(5);
         .precipitation-time {
-            color: black;
+            color: white;
             position: absolute;
-            left: 0;
-            bottom: -50px;
+            left: -10px;
+            bottom: -10px;
             font-size: 16px;
             white-space: nowrap;
+            background-color: rgba(109, 25, 25, 0.5);
+            border-radius: 40px;
+            padding: 0 10px;
+            line-height: 1.5em;
         }
     }
 }
@@ -99,14 +102,14 @@ ul.wind-effects {
     text-align: left;
 }
 
-.hidden {
-    display: none;
-}
-
 .tooltip-inner {
     font-family: 'Alegreya', serif;
     background-color: #d6d6cb;
     color: black;
+
+    &.large-tooltip-inner{
+        max-width: 500px;
+    }
 }
 
 .bs-tooltip-top,
@@ -134,9 +137,14 @@ ul.wind-effects {
 .datepicker.datepicker-dropdown {
     background-image: url('parchment-texture.png');
     background-color: beige;
-    table {
+    & > div {
+        width: 100%;
+    }
+    table.table-condensed {
+        width: 100%;
         thead {
             background-color: brown;
+            display: table-caption;
             th {
                 color: white;
                 &:hover:not(.dow) {
@@ -156,21 +164,39 @@ ul.wind-effects {
 }
 
 @media (min-width: 576px) {
+    body {
+        padding: 50px;
+        // fixes a problem with tooltip
+        overflow-y: scroll;
+    }
     .selected-weather-effects {
         display: block;
     }
-    .picto-list {
-        margin-left: -20px;
-        margin-right: -20px;
-        h2 {
-            margin-left: 20px;
+    .picto-list:not(:empty) {
+        margin: auto -@tileMargin -@tileMargin -@tileMargin;
+        h2,
+        header {
+            margin: @tileMargin;
         }
         .wi {
             font-size: 45px;
             height: 80px;
             width: 80px;
             line-height: 80px;
-            margin: 20px;
+            margin: @tileMargin;
         }
     }
+}
+
+// mix-ins
+.severity-loop (@n,
+@i: 1) when (@i =< @n) {
+    &.severity-@{i} {
+        @red: ((@n)-(@i)) * 255 / ((@n)-1)+255 / 2; // m/2 -> m
+        @green: ((@n)-(@i)) * 255 / (((@n)-1)*1.5); // 0 -> 2m/3
+        @blue: ((@n)-(@i)) * 255 / (((@n)-1)*5); // 0 -> 5/5
+        color: rgb(@red, @green, @blue);
+    }
+    .severity-loop(@n,
+    (@i+1));
 }
